@@ -40,6 +40,18 @@ export default function Library({
   const [downloadingId, setDownloadingId] = useState<string | null>(null)
 
   useEffect(() => setFavs(favIds), [favIds.join()])
+
+  useEffect(() => {
+    if (typeof window === 'undefined') return
+    const params = new URLSearchParams(window.location.search)
+    const fmtParam = params.get('fmt')
+    const catParam = params.get('cat')
+    if (fmtParam) {
+      setF((prev) => ({ ...prev, fmt: fmtParam }))
+    } else if (catParam) {
+      setF((prev) => ({ ...prev, cat: catParam }))
+    }
+  }, [])
   const set = (k: string, v: any) => setF((p) => ({ ...p, [k]: v }))
 
   const fmts = [...new Set(items.map((r) => r.format).filter(Boolean))].sort()

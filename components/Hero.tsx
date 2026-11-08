@@ -1,21 +1,225 @@
 'use client'
 
-import React from 'react'
+import React, { useState, useRef } from 'react'
+import Link from 'next/link'
+
+interface CardItem {
+  id: string
+  href: string
+  badgeText: string
+  badgeBg: string
+  badgeBorder: string
+  icon: string
+  title: string
+  subtitle: string
+  bars: Array<{ width: string; gradient: string }>
+  baseAngle: number
+  baseZ: number
+  slotStyle: React.CSSProperties
+}
+
+const CARDS_DATA: CardItem[] = [
+  {
+    id: 'pdf-guide',
+    href: '/books?fmt=PDF',
+    badgeText: 'PDF GUIDE',
+    badgeBg: 'rgba(168, 85, 247, 0.25)',
+    badgeBorder: 'rgba(168, 85, 247, 0.55)',
+    icon: '📄',
+    title: 'Workbooks & Guides',
+    subtitle: 'Actionable step-by-step master guides',
+    bars: [
+      { width: '85%', gradient: 'linear-gradient(90deg, #a855f7, transparent)' },
+      { width: '65%', gradient: 'linear-gradient(90deg, #ec4899, transparent)' },
+      { width: '75%', gradient: 'linear-gradient(90deg, #38bdf8, transparent)' },
+    ],
+    baseAngle: -8,
+    baseZ: 20,
+    slotStyle: {
+      left: '4%',
+      top: '50px',
+      animationDelay: '0s',
+      zIndex: 1,
+    },
+  },
+  {
+    id: 'epub-book',
+    href: '/books?fmt=EPUB',
+    badgeText: 'EPUB BOOK',
+    badgeBg: 'rgba(236, 72, 153, 0.25)',
+    badgeBorder: 'rgba(236, 72, 153, 0.55)',
+    icon: '📚',
+    title: 'Digital Books',
+    subtitle: 'Read anywhere on tablet, phone & laptop',
+    bars: [
+      { width: '90%', gradient: 'linear-gradient(90deg, #ec4899, #a855f7)' },
+      { width: '55%', gradient: 'linear-gradient(90deg, #ec4899, transparent)' },
+      { width: '70%', gradient: 'linear-gradient(90deg, #c084fc, transparent)' },
+    ],
+    baseAngle: 1,
+    baseZ: 70,
+    slotStyle: {
+      left: '30%',
+      top: '10px',
+      animationDelay: '-2s',
+      zIndex: 2,
+    },
+  },
+  {
+    id: 'study-notes',
+    href: '/#explore',
+    badgeText: 'STUDY NOTES',
+    badgeBg: 'rgba(56, 189, 248, 0.25)',
+    badgeBorder: 'rgba(56, 189, 248, 0.55)',
+    icon: '🧠',
+    title: 'Mastery Notes',
+    subtitle: 'Distilled psychological & life frameworks',
+    bars: [
+      { width: '80%', gradient: 'linear-gradient(90deg, #38bdf8, #a855f7)' },
+      { width: '95%', gradient: 'linear-gradient(90deg, #38bdf8, transparent)' },
+      { width: '60%', gradient: 'linear-gradient(90deg, #a855f7, transparent)' },
+    ],
+    baseAngle: 8,
+    baseZ: 120,
+    slotStyle: {
+      left: '56%',
+      top: '75px',
+      animationDelay: '-4s',
+      zIndex: 3,
+    },
+  },
+]
+
+function HeroResourceCard({ card }: { card: CardItem }) {
+  const [isHovered, setIsHovered] = useState(false)
+  const [isPressed, setIsPressed] = useState(false)
+  const [tilt, setTilt] = useState({ rx: 0, ry: 0, px: 50, py: 50 })
+  const cardRef = useRef<HTMLAnchorElement | null>(null)
+
+  const handleMouseMove = (e: React.MouseEvent<HTMLAnchorElement>) => {
+    if (!cardRef.current) return
+    const rect = cardRef.current.getBoundingClientRect()
+    const x = (e.clientX - rect.left) / rect.width
+    const y = (e.clientY - rect.top) / rect.height
+    // Subtle 3D tilt between -8deg and +8deg
+    const rx = -(y - 0.5) * 16
+    const ry = (x - 0.5) * 16
+    setTilt({
+      rx: Math.round(rx * 10) / 10,
+      ry: Math.round(ry * 10) / 10,
+      px: Math.round(x * 100),
+      py: Math.round(y * 100),
+    })
+  }
+
+  const handleMouseEnter = () => {
+    setIsHovered(true)
+  }
+
+  const handleMouseLeave = () => {
+    setIsHovered(false)
+    setIsPressed(false)
+    setTilt({ rx: 0, ry: 0, px: 50, py: 50 })
+  }
+
+  // Exact same hover zoom scale(1.08) and identical transition dynamics for all 3 cards
+  const transformStyle: React.CSSProperties = isHovered
+    ? {
+        transform: `translateZ(180px) rotateZ(0deg) scale(1.08) rotateX(${tilt.rx}deg) rotateY(${tilt.ry}deg)`,
+      }
+    : isPressed
+    ? {
+        transform: `translateZ(140px) rotateZ(0deg) scale(1.04)`,
+      }
+    : {
+        transform: `translateZ(${card.baseZ}px) rotateZ(${card.baseAngle}deg) scale(1) rotateX(0deg) rotateY(0deg)`,
+      }
+
+  return (
+    <div
+      className={`fc-slot ${isHovered ? 'is-hovered' : ''} ${isPressed ? 'is-pressed' : ''}`}
+      style={card.slotStyle}
+    >
+      {/* Soft Ambient Glow Aura Behind Each Card */}
+      <div className="fc-ambient-glow" />
+
+      {/* Clickable Card with 3D Hover Zoom and Tilt */}
+      <Link
+        ref={cardRef}
+        href={card.href}
+        className={`fc ${isHovered ? 'is-hovered' : ''} ${isPressed ? 'is-pressed' : ''}`}
+        style={
+          {
+            ...transformStyle,
+            '--glare-x': `${tilt.px}%`,
+            '--glare-y': `${tilt.py}%`,
+          } as React.CSSProperties
+        }
+        onMouseMove={handleMouseMove}
+        onMouseEnter={handleMouseEnter}
+        onMouseLeave={handleMouseLeave}
+        onTouchStart={() => setIsPressed(true)}
+        onTouchEnd={() => setIsPressed(false)}
+        aria-label={`${card.badgeText}: ${card.title} - ${card.subtitle}. Click to explore.`}
+      >
+        {/* Subtle moving light reflection / sheen */}
+        <div className="fc-sheen">
+          <div className="fc-sheen-glare" />
+          <div className="fc-sheen-sweep" />
+        </div>
+
+        {/* Card Header */}
+        <div className="fc-top">
+          <span
+            className="fc-badge"
+            style={{
+              background: card.badgeBg,
+              borderColor: card.badgeBorder,
+            }}
+          >
+            {card.badgeText}
+          </span>
+          <div className="fc-icon">{card.icon}</div>
+        </div>
+
+        {/* Card Miniature Page Lines */}
+        <div
+          style={{
+            margin: '14px 0',
+            display: 'flex',
+            flexDirection: 'column',
+            gap: 6,
+            opacity: 0.85,
+          }}
+        >
+          {card.bars.map((bar, i) => (
+            <div
+              key={i}
+              style={{
+                height: 6,
+                width: bar.width,
+                borderRadius: 3,
+                background: bar.gradient,
+              }}
+            />
+          ))}
+        </div>
+
+        {/* Card Bottom Details & Click Callout */}
+        <div className="fc-bottom">
+          <span className="fc-title">{card.title}</span>
+          <small>{card.subtitle}</small>
+          <div className="fc-action-hint">
+            <span>Explore {card.badgeText}</span>
+            <span className="fc-arrow">→</span>
+          </div>
+        </div>
+      </Link>
+    </div>
+  )
+}
 
 export default function Hero({ count }: { count: number }) {
-  const move = (e: React.MouseEvent<HTMLDivElement>) => {
-    const r = e.currentTarget.getBoundingClientRect()
-    const x = (e.clientX - r.left) / r.width - 0.5
-    const y = (e.clientY - r.top) / r.height - 0.5
-    e.currentTarget.style.setProperty('--ry', `${x * 20}deg`)
-    e.currentTarget.style.setProperty('--rx', `${-y * 16}deg`)
-  }
-
-  const reset = (e: React.MouseEvent<HTMLDivElement>) => {
-    e.currentTarget.style.setProperty('--ry', '0deg')
-    e.currentTarget.style.setProperty('--rx', '0deg')
-  }
-
   return (
     <section className="wrap hero">
       <div>
@@ -69,64 +273,12 @@ export default function Hero({ count }: { count: number }) {
         </div>
       </div>
 
-      <div
-        className="stack"
-        onMouseMove={move}
-        onMouseLeave={reset}
-        aria-hidden="true"
-      >
+      <div className="stack" aria-label="Featured digital resource categories">
         <div className="stack-glow-backdrop" />
         <div className="tilt">
-          {/* Card 1: PDF Guide */}
-          <div className="fc">
-            <div className="fc-top">
-              <span className="fc-badge">PDF GUIDE</span>
-              <div className="fc-icon">📄</div>
-            </div>
-            <div style={{ margin: '14px 0', display: 'flex', flexDirection: 'column', gap: 6, opacity: 0.7 }}>
-              <div style={{ height: 6, width: '85%', borderRadius: 3, background: 'linear-gradient(90deg, #a855f7, transparent)' }} />
-              <div style={{ height: 6, width: '65%', borderRadius: 3, background: 'linear-gradient(90deg, #ec4899, transparent)' }} />
-              <div style={{ height: 6, width: '75%', borderRadius: 3, background: 'linear-gradient(90deg, #38bdf8, transparent)' }} />
-            </div>
-            <div className="fc-bottom">
-              <span className="fc-title">Workbooks &amp; Guides</span>
-              <small>Actionable step-by-step master guides</small>
-            </div>
-          </div>
-
-          {/* Card 2: EPUB Book */}
-          <div className="fc">
-            <div className="fc-top">
-              <span className="fc-badge" style={{ background: 'rgba(236, 72, 153, 0.25)', borderColor: 'rgba(236, 72, 153, 0.5)' }}>EPUB BOOK</span>
-              <div className="fc-icon">📚</div>
-            </div>
-            <div style={{ margin: '14px 0', display: 'flex', flexDirection: 'column', gap: 6, opacity: 0.8 }}>
-              <div style={{ height: 6, width: '90%', borderRadius: 3, background: 'linear-gradient(90deg, #ec4899, #a855f7)' }} />
-              <div style={{ height: 6, width: '55%', borderRadius: 3, background: 'linear-gradient(90deg, #ec4899, transparent)' }} />
-              <div style={{ height: 6, width: '70%', borderRadius: 3, background: 'linear-gradient(90deg, #c084fc, transparent)' }} />
-            </div>
-            <div className="fc-bottom">
-              <span className="fc-title">Digital Books</span>
-              <small>Read anywhere on tablet, phone &amp; laptop</small>
-            </div>
-          </div>
-
-          {/* Card 3: Notes */}
-          <div className="fc">
-            <div className="fc-top">
-              <span className="fc-badge" style={{ background: 'rgba(56, 189, 248, 0.25)', borderColor: 'rgba(56, 189, 248, 0.5)' }}>STUDY NOTES</span>
-              <div className="fc-icon">🧠</div>
-            </div>
-            <div style={{ margin: '14px 0', display: 'flex', flexDirection: 'column', gap: 6, opacity: 0.8 }}>
-              <div style={{ height: 6, width: '80%', borderRadius: 3, background: 'linear-gradient(90deg, #38bdf8, #a855f7)' }} />
-              <div style={{ height: 6, width: '95%', borderRadius: 3, background: 'linear-gradient(90deg, #38bdf8, transparent)' }} />
-              <div style={{ height: 6, width: '60%', borderRadius: 3, background: 'linear-gradient(90deg, #a855f7, transparent)' }} />
-            </div>
-            <div className="fc-bottom">
-              <span className="fc-title">Mastery Notes</span>
-              <small>Distilled psychological &amp; life frameworks</small>
-            </div>
-          </div>
+          {CARDS_DATA.map((card) => (
+            <HeroResourceCard key={card.id} card={card} />
+          ))}
         </div>
       </div>
     </section>
