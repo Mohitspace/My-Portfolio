@@ -6,6 +6,7 @@ import AuthProvider from '@/components/AuthProvider'
 import Navbar from '@/components/Navbar'
 import AnimatedBackground from '@/components/AnimatedBackground'
 import Footer from '@/components/Footer'
+import WelcomeIntro from '@/components/WelcomeIntro'
 
 const inter = Inter({ subsets: ['latin'], variable: '--font-inter' })
 const grotesk = Space_Grotesk({ subsets: ['latin'], variable: '--font-grotesk' })
@@ -20,6 +21,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
   return (
     <html lang="en" className={`${inter.variable} ${grotesk.variable}`}>
       <body>
+        <WelcomeIntro />
         <AnimatedBackground />
         <AuthProvider loggedIn={!!user}>
           <Navbar email={user?.email ?? null} />
