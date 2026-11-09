@@ -1,3 +1,4 @@
+import { redirect } from 'next/navigation'
 import Library from '@/components/Library'
 import { ctx } from '@/lib/data'
 
@@ -6,13 +7,26 @@ export const metadata = {
 }
 
 export default async function Saved() {
-  const { sb } = await ctx()
-  const { data } = await sb
-    .from('favorites')
-    .select('created_at,resources(*)')
-    .order('created_at', { ascending: false })
+  const { sb, user } = await ctx()
+  if (!user) {
+    redirect('/')
+  }
 
-  const items = (data ?? []).map((r: any) => r.resources).filter(Boolean)
+  let items: any[] = []
+  try {
+    if (sb) {
+      const { data, error } = await sb
+        .from('favorites')
+        .select('created_at,resources(*)')
+        .order('created_at', { ascending: false })
+
+      if (!error && data) {
+        items = data.map((r: any) => r.resources).filter(Boolean)
+      }
+    }
+  } catch (err) {
+    console.error('[Saved] Query error:', err)
+  }
 
   return (
     <>

@@ -2,17 +2,39 @@ import Hero from '@/components/Hero'
 import Library from '@/components/Library'
 import ContactForm from '@/components/ContactForm'
 import WelcomeIntro from '@/components/WelcomeIntro'
-import { ctx, favIdsFor, getSite } from '@/lib/data'
+import { ctx, favIdsFor, getSite, DEFAULT_SITE } from '@/lib/data'
+
+export const dynamic = 'force-dynamic'
 
 const ok = (u: string) => /^https?:\/\//.test(u)
 
 export default async function Home() {
-  const { sb, user } = await ctx()
-  const [{ data }, favs, site] = await Promise.all([
-    sb.from('resources').select('*').order('created_at', { ascending: false }),
-    favIdsFor(sb, user),
-    getSite(sb),
-  ])
+  let data: any[] = []
+  let favs: string[] = []
+  let site: any = DEFAULT_SITE
+
+  try {
+    const { sb, user } = await ctx()
+    if (sb) {
+      const [resResult, favsResult, siteResult] = await Promise.allSettled([
+        sb.from('resources').select('*').order('created_at', { ascending: false }),
+        favIdsFor(sb, user),
+        getSite(sb),
+      ])
+
+      if (resResult.status === 'fulfilled' && resResult.value?.data) {
+        data = resResult.value.data
+      }
+      if (favsResult.status === 'fulfilled' && Array.isArray(favsResult.value)) {
+        favs = favsResult.value
+      }
+      if (siteResult.status === 'fulfilled' && siteResult.value) {
+        site = siteResult.value
+      }
+    }
+  } catch (err) {
+    console.error('[Home] Data loading error:', err)
+  }
 
   const links = [
     { name: 'YouTube Channel', url: site.youtube, icon: '▶' },

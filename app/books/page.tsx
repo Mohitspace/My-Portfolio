@@ -6,12 +6,30 @@ export const metadata = {
   description: 'Curated e-books and PDFs to read and download from TheMohitFact.',
 }
 
+export const dynamic = 'force-dynamic'
+
 export default async function Books() {
-  const { sb, user } = await ctx()
-  const [{ data }, favs] = await Promise.all([
-    sb.from('resources').select('*').order('created_at', { ascending: false }),
-    favIdsFor(sb, user),
-  ])
+  let data: any[] = []
+  let favs: string[] = []
+
+  try {
+    const { sb, user } = await ctx()
+    if (sb) {
+      const [resResult, favsResult] = await Promise.allSettled([
+        sb.from('resources').select('*').order('created_at', { ascending: false }),
+        favIdsFor(sb, user),
+      ])
+
+      if (resResult.status === 'fulfilled' && resResult.value?.data) {
+        data = resResult.value.data
+      }
+      if (favsResult.status === 'fulfilled' && Array.isArray(favsResult.value)) {
+        favs = favsResult.value
+      }
+    }
+  } catch (err) {
+    console.error('[Books] Data loading error:', err)
+  }
 
   const items = (data ?? []).filter(
     (r: any) =>

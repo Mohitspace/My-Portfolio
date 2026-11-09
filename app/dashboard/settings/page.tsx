@@ -1,3 +1,4 @@
+import { redirect } from 'next/navigation'
 import SettingsForms from '@/components/SettingsForms'
 import { ctx } from '@/lib/data'
 
@@ -7,11 +8,23 @@ export const metadata = {
 
 export default async function Settings() {
   const { sb, user } = await ctx()
-  const { data: prof } = await sb
-    .from('profiles')
-    .select('full_name')
-    .eq('id', user!.id)
-    .single()
+  if (!user) {
+    redirect('/')
+  }
+
+  let prof: any = null
+  try {
+    if (sb) {
+      const { data } = await sb
+        .from('profiles')
+        .select('full_name')
+        .eq('id', user.id)
+        .single()
+      prof = data
+    }
+  } catch (err) {
+    console.error('[Settings] Profile query error:', err)
+  }
 
   return (
     <>
@@ -38,8 +51,8 @@ export default async function Settings() {
       </div>
 
       <SettingsForms
-        userId={user!.id}
-        email={user!.email ?? ''}
+        userId={user.id}
+        email={user.email ?? ''}
         name={prof?.full_name ?? ''}
       />
     </>

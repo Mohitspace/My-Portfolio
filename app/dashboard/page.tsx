@@ -1,24 +1,54 @@
 import Link from 'next/link'
+import { redirect } from 'next/navigation'
 import { ctx } from '@/lib/data'
 
 export default async function Dashboard() {
   const { sb, user } = await ctx()
+  if (!user) {
+    redirect('/')
+  }
+
   const head = { count: 'exact' as const, head: true }
-  const [{ data: prof }, { data: hist, count: dl }, { count: saved }, { data: latest }] =
-    await Promise.all([
-      sb.from('profiles').select('full_name').eq('id', user!.id).single(),
-      sb
-        .from('downloads')
-        .select('created_at,resources(title,format)', { count: 'exact' })
-        .order('created_at', { ascending: false })
-        .limit(10),
-      sb.from('favorites').select('resource_id', head),
-      sb
-        .from('resources')
-        .select('id,title,category,format,created_at')
-        .order('created_at', { ascending: false })
-        .limit(4),
-    ])
+  let prof: any = null
+  let hist: any[] = []
+  let dl: number = 0
+  let saved: number = 0
+  let latest: any[] = []
+
+  try {
+    if (sb) {
+      const [profRes, dlRes, favRes, latestRes] = await Promise.allSettled([
+        sb.from('profiles').select('full_name').eq('id', user.id).single(),
+        sb
+          .from('downloads')
+          .select('created_at,resources(title,format)', { count: 'exact' })
+          .order('created_at', { ascending: false })
+          .limit(10),
+        sb.from('favorites').select('resource_id', head),
+        sb
+          .from('resources')
+          .select('id,title,category,format,created_at')
+          .order('created_at', { ascending: false })
+          .limit(4),
+      ])
+
+      if (profRes.status === 'fulfilled' && profRes.value?.data) {
+        prof = profRes.value.data
+      }
+      if (dlRes.status === 'fulfilled') {
+        hist = dlRes.value?.data ?? []
+        dl = dlRes.value?.count ?? 0
+      }
+      if (favRes.status === 'fulfilled') {
+        saved = favRes.value?.count ?? 0
+      }
+      if (latestRes.status === 'fulfilled' && latestRes.value?.data) {
+        latest = latestRes.value.data
+      }
+    }
+  } catch (err) {
+    console.error('[Dashboard] Data fetch error:', err)
+  }
 
   return (
     <>
@@ -43,7 +73,7 @@ export default async function Dashboard() {
           Welcome back{prof?.full_name ? `, ${prof.full_name}` : ''}
         </h1>
         <p className="muted" style={{ marginTop: 4 }}>
-          Signed in as <span style={{ color: 'var(--tx)' }}>{user!.email}</span>
+          Signed in as <span style={{ color: 'var(--tx)' }}>{user.email}</span>
         </p>
       </div>
 
