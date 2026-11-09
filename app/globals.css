@@ -2076,6 +2076,25 @@ label.f {
   overflow: hidden;
   opacity: 1;
   transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1), transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+  animation: introOverlaySafetyDismiss 6.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes introOverlaySafetyDismiss {
+  0%, 88% {
+    opacity: 1;
+    visibility: visible;
+  }
+  98% {
+    opacity: 0;
+    pointer-events: none;
+    transform: scale(1.04);
+  }
+  100% {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    display: none;
+  }
 }
 
 .intro-overlay.intro-fade-out {

@@ -3,6 +3,12 @@
 import React, { useEffect, useState } from 'react'
 
 /**
+ * In-memory flag so the intro plays once on initial website visit or refresh,
+ * but does not replay on client-side route navigations.
+ */
+let hasPlayedThisSession = false
+
+/**
  * Fully automatic cinematic intro sequence:
  *   STEP 1  'text'         — Welcome text appears (fade-in, slide-up, letter reveal)
  *   STEP 2  'textAndPhoto' — Profile image smoothly revealed beside the text
@@ -16,12 +22,17 @@ import React, { useEffect, useState } from 'react'
 type Phase = 'text' | 'textAndPhoto' | 'loading' | 'exit' | 'done'
 
 export default function WelcomeIntro() {
-  // Start in 'text' so the overlay is rendered immediately in SSR HTML (prevents homepage flash)
-  const [phase, setPhase] = useState<Phase>('text')
+  const [phase, setPhase] = useState<Phase>(() => {
+    // If already played in this page session, don't show again
+    if (typeof window !== 'undefined' && hasPlayedThisSession) {
+      return 'done'
+    }
+    return 'text'
+  })
 
   useEffect(() => {
-    // Only play on the homepage / root visit; if deep internal route, dismiss immediately
-    if (typeof window !== 'undefined' && window.location.pathname !== '/' && window.location.pathname !== '') {
+    // If already marked done, do nothing
+    if (hasPlayedThisSession) {
       setPhase('done')
       return () => {}
     }
@@ -44,14 +55,22 @@ export default function WelcomeIntro() {
 
     // STEP 4 → Done:    Unmount overlay completely (5.4s)
     const t4 = setTimeout(() => {
+      hasPlayedThisSession = true
       setPhase('done')
     }, 5400)
+
+    // Hard fail-safe: unconditionally dismiss intro after 5.8s no matter what happens
+    const tFailSafe = setTimeout(() => {
+      hasPlayedThisSession = true
+      setPhase('done')
+    }, 5800)
 
     return () => {
       clearTimeout(t1)
       clearTimeout(t2)
       clearTimeout(t3)
       clearTimeout(t4)
+      clearTimeout(tFailSafe)
     }
   }, [])
 
@@ -121,7 +140,7 @@ export default function WelcomeIntro() {
 
                 <div className="intro-photo-frame intro-welcome-photo-frame">
                   <img
-                    src="/image/Confident Young Man in White Shirt.png"
+                    src="/image/Confident%20Young%20Man%20in%20White%20Shirt.png"
                     alt="Mohit Kumar – TheMohitFact"
                     className="intro-photo-img"
                     loading="eager"
@@ -159,7 +178,7 @@ export default function WelcomeIntro() {
 
             <div className="intro-photo-frame intro-loading-photo-frame">
               <img
-                src="/image/Confident Young Man in White Shirt.png"
+                src="/image/Confident%20Young%20Man%20in%20White%20Shirt.png"
                 alt="Mohit Kumar – TheMohitFact"
                 className="intro-photo-img"
                 loading="eager"

@@ -1,6 +1,7 @@
 import Hero from '@/components/Hero'
 import Library from '@/components/Library'
 import ContactForm from '@/components/ContactForm'
+import WelcomeIntro from '@/components/WelcomeIntro'
 import { ctx, favIdsFor, getSite } from '@/lib/data'
 
 const ok = (u: string) => /^https?:\/\//.test(u)
@@ -21,6 +22,7 @@ export default async function Home() {
 
   return (
     <>
+      <WelcomeIntro />
       <Hero count={data?.length ?? 0} />
 
       {/* Explore Section */}
