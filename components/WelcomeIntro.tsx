@@ -1,7 +1,6 @@
 'use client'
 
 import React, { useEffect, useState } from 'react'
-import { usePathname } from 'next/navigation'
 
 /**
  * Fully automatic cinematic intro sequence:
@@ -12,32 +11,41 @@ import { usePathname } from 'next/navigation'
  *           'done'         — Overlay unmounted from DOM
  *
  * No skip button. No user interaction required. Fully automatic.
+ * Zero external routing hooks to prevent Webpack runtime resolution errors.
  */
 type Phase = 'text' | 'textAndPhoto' | 'loading' | 'exit' | 'done'
 
 export default function WelcomeIntro() {
-  const pathname = usePathname()
-  const isHomePage = !pathname || pathname === '/'
-
   // Start in 'text' so the overlay is rendered immediately in SSR HTML (prevents homepage flash)
   const [phase, setPhase] = useState<Phase>('text')
 
   useEffect(() => {
-    // Skip intro entirely on deep internal pages (/books, /dashboard, etc.)
-    if (!isHomePage) {
+    // Only play on the homepage / root visit; if deep internal route, dismiss immediately
+    if (typeof window !== 'undefined' && window.location.pathname !== '/' && window.location.pathname !== '') {
       setPhase('done')
-      return
+      return () => {}
     }
 
     // Fully automatic timed sequence — no interaction needed
-    // STEP 1 → STEP 2:  Welcome text finishes → profile image slides in
-    const t1 = setTimeout(() => setPhase('textAndPhoto'), 1500)
-    // STEP 2 → STEP 3:  Both visible → transition to centered loading screen
-    const t2 = setTimeout(() => setPhase('loading'), 3200)
-    // STEP 3 → STEP 4:  Loading done → begin cinematic exit
-    const t3 = setTimeout(() => setPhase('exit'), 4700)
-    // STEP 4 → Done:    Unmount overlay completely
-    const t4 = setTimeout(() => setPhase('done'), 5400)
+    // STEP 1 → STEP 2:  Welcome text finishes → profile image slides in (1.5s)
+    const t1 = setTimeout(() => {
+      setPhase('textAndPhoto')
+    }, 1500)
+
+    // STEP 2 → STEP 3:  Both visible → transition to centered loading screen (3.2s)
+    const t2 = setTimeout(() => {
+      setPhase('loading')
+    }, 3200)
+
+    // STEP 3 → STEP 4:  Loading done → begin cinematic exit (4.7s)
+    const t3 = setTimeout(() => {
+      setPhase('exit')
+    }, 4700)
+
+    // STEP 4 → Done:    Unmount overlay completely (5.4s)
+    const t4 = setTimeout(() => {
+      setPhase('done')
+    }, 5400)
 
     return () => {
       clearTimeout(t1)
@@ -45,10 +53,12 @@ export default function WelcomeIntro() {
       clearTimeout(t3)
       clearTimeout(t4)
     }
-  }, [isHomePage])
+  }, [])
 
-  // Once complete or not on homepage — render nothing
-  if (phase === 'done' || !isHomePage) return null
+  // Once complete or dismissed — render nothing
+  if (phase === 'done') {
+    return null
+  }
 
   const welcomeText = "WELCOME TO MOHIT'S WORLD"
   const isExiting = phase === 'exit'
