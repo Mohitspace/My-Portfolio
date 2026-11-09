@@ -16,7 +16,12 @@ export const metadata: Metadata = {
 }
 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
-  const { data: { user } } = await (await createClient()).auth.getUser()
+  let user = null
+  try {
+    const sb = await createClient()
+    const { data } = await sb.auth.getUser()
+    user = data?.user ?? null
+  } catch {}
   return (
     <html lang="en" className={`${inter.variable} ${grotesk.variable}`}>
       <body>

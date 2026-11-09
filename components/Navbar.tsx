@@ -18,7 +18,8 @@ const ITEMS = [
 export default function Navbar({ email }: { email: string | null }) {
   const { open } = useAuth()
   const router = useRouter()
-  const pathname = usePathname()
+  const rawPathname = usePathname()
+  const pathname = rawPathname || ''
   const [menu, setMenu] = useState(false)
   const [scrolled, setScrolled] = useState(false)
 
@@ -37,10 +38,12 @@ export default function Navbar({ email }: { email: string | null }) {
     router.refresh()
   }
 
+  const isDashboard = pathname.startsWith('/dashboard')
+
   const auth = email ? (
     <>
       <Link
-        className={`btn ${pathname.startsWith('/dashboard') ? 'pri' : ''}`}
+        className={`btn ${isDashboard ? 'pri' : ''}`}
         href="/dashboard"
         onClick={() => setMenu(false)}
       >
@@ -73,7 +76,7 @@ export default function Navbar({ email }: { email: string | null }) {
           {ITEMS.map((item, index) => {
             const isBooks = item.href === '/books' && pathname === '/books'
             const isHome = item.href === '/' && pathname === '/'
-            const isActive = isBooks || (isHome && typeof window !== 'undefined' && !window.location.hash)
+            const isActive = isBooks || (isHome && !pathname.includes('#'))
             return (
               <Link
                 key={`${item.label}-${index}`}

@@ -4,7 +4,8 @@ import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 
 export default function DashNav({ isAdmin }: { isAdmin: boolean }) {
-  const path = usePathname()
+  const rawPath = usePathname()
+  const path = rawPath || ''
 
   const items = [
     { href: '/dashboard', label: 'Overview', icon: '📊' },
