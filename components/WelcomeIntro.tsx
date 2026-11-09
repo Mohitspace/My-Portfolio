@@ -94,6 +94,7 @@ export default function WelcomeIntro() {
       {/* Cinematic Ambient Background */}
       <div className="intro-backdrop">
         <div className="intro-orb intro-orb-purple" />
+        <div className="intro-orb intro-orb-amber" />
         <div className="intro-orb intro-orb-blue" />
         <div className="intro-orb intro-orb-pink" />
         <div className="intro-grid-pattern" />
