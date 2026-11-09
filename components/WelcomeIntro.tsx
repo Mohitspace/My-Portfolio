@@ -1,35 +1,38 @@
 'use client'
 
 import React, { useEffect, useState } from 'react'
+import { usePathname } from 'next/navigation'
 
-type Phase = 'text' | 'photo' | 'exit' | 'done' | 'skip'
+type Phase = 'welcome' | 'loading' | 'exit' | 'done'
 
 export default function WelcomeIntro() {
-  // Start as 'text' by default so the overlay renders immediately (prevents homepage flash).
-  // useEffect will immediately set to 'skip' if the user has already seen it.
-  const [phase, setPhase] = useState<Phase>('text')
+  const pathname = usePathname()
+  // Run on the root/homepage or initial entrance
+  const isHomePage = !pathname || pathname === '/'
+
+  // Start in 'welcome' phase so the overlay is present immediately in HTML (prevents flash)
+  const [phase, setPhase] = useState<Phase>('welcome')
 
   useEffect(() => {
-    // Check session on the client side only
-    try {
-      if (sessionStorage.getItem('mohit_intro_seen') === 'true') {
-        setPhase('skip')
-        return
-      }
-    } catch {
-      // sessionStorage blocked — still show intro
+    // If user directly opened a deep internal page like /books or /dashboard, skip intro
+    if (!isHomePage) {
+      setPhase('done')
+      return
     }
 
-    // Cinematic timing sequence
-    // 0.0s — 'text'  : welcome text letter-by-letter reveal
-    // 2.4s — 'photo' : text fades, portrait fades in
-    // 4.2s — 'exit'  : everything fades + zooms out
-    // 5.0s — 'done'  : unmount overlay, homepage fully visible
-    const t1 = setTimeout(() => setPhase('photo'), 2400)
-    const t2 = setTimeout(() => setPhase('exit'), 4200)
+    // STEP 1: Welcome Screen (Text on left + Photo on right together) -> 0.0s to 2.6s
+    const t1 = setTimeout(() => {
+      setPhase('loading')
+    }, 2600)
+
+    // STEP 2: Loading Screen (Center Photo + Name + Loading animation) -> 2.6s to 4.3s
+    const t2 = setTimeout(() => {
+      setPhase('exit')
+    }, 4300)
+
+    // STEP 3: Reveal Homepage smoothly & unmount overlay -> 4.3s to 5.0s
     const t3 = setTimeout(() => {
       setPhase('done')
-      try { sessionStorage.setItem('mohit_intro_seen', 'true') } catch {}
     }, 5000)
 
     return () => {
@@ -37,86 +40,129 @@ export default function WelcomeIntro() {
       clearTimeout(t2)
       clearTimeout(t3)
     }
-  }, [])
+  }, [isHomePage])
 
   const handleSkip = () => {
-    try { sessionStorage.setItem('mohit_intro_seen', 'true') } catch {}
     setPhase('exit')
-    setTimeout(() => setPhase('done'), 600)
+    setTimeout(() => {
+      setPhase('done')
+    }, 500)
   }
 
-  // Fully removed — render nothing
-  if (phase === 'done' || phase === 'skip') return null
+  // Once completely finished or if not on homepage, remove from DOM
+  if (phase === 'done' || !isHomePage) {
+    return null
+  }
 
   const welcomeText = "WELCOME TO MOHIT'S WORLD"
   const isExiting = phase === 'exit'
-  const showPhoto = phase === 'photo' || phase === 'exit'
-  const showText = phase === 'text'
+  const isWelcome = phase === 'welcome'
+  const isLoading = phase === 'loading' || isExiting
 
   return (
     <div
       className={`intro-overlay${isExiting ? ' intro-fade-out' : ''}`}
       role="dialog"
       aria-modal="true"
-      aria-label="Welcome intro"
+      aria-label="Welcome Intro — TheMohitFact Hub"
     >
-      {/* Animated ambient backdrop orbs */}
+      {/* Cinematic Ambient Background */}
       <div className="intro-backdrop">
         <div className="intro-orb intro-orb-purple" />
         <div className="intro-orb intro-orb-blue" />
         <div className="intro-orb intro-orb-pink" />
+        <div className="intro-grid-pattern" />
       </div>
 
-      {/* Skip button */}
+      {/* Skip Button */}
       {!isExiting && (
         <button
           type="button"
           className="intro-skip-btn"
           onClick={handleSkip}
-          aria-label="Skip welcome intro"
+          aria-label="Skip intro to homepage"
         >
-          Skip&nbsp;→
+          <span>Skip Intro</span>
+          <span style={{ fontSize: '1rem', lineHeight: 1 }}>→</span>
         </button>
       )}
 
-      {/* Centre stage */}
-      <div className="intro-center-stage">
-        {/* ── PHASE: text ── */}
-        {showText && (
-          <div className="intro-text-area intro-text-enter">
-            <div className="intro-eyebrow">
-              <span>✦</span> OFFICIAL DIGITAL PLATFORM <span>✦</span>
+      {/* ── STEP 1: WELCOME SCREEN (Text on Left + Photo on Right Together) ── */}
+      {isWelcome && (
+        <div className="intro-welcome-stage">
+          <div className="intro-welcome-grid">
+            {/* Left Side: Welcome Text */}
+            <div className="intro-welcome-left">
+              <div className="intro-eyebrow">
+                <span>✦</span> OFFICIAL DIGITAL PLATFORM <span>✦</span>
+              </div>
+
+              <h1 className="intro-title intro-title-left" aria-label={welcomeText}>
+                {welcomeText.split('').map((char, index) => (
+                  <span
+                    key={index}
+                    className="intro-char"
+                    style={{ animationDelay: `${0.12 + index * 0.035}s` }}
+                  >
+                    {char === ' ' ? '\u00A0' : char}
+                  </span>
+                ))}
+              </h1>
+
+              <p className="intro-subtitle intro-subtitle-left">
+                Knowledge that moves you forward · Curated digital books, guides &amp; study notes
+              </p>
+
+              <div className="intro-creator-pill">
+                <span className="intro-badge-pulse" />
+                <span>MOHIT KUMAR · CREATOR &amp; CURATOR</span>
+              </div>
             </div>
 
-            <h1 className="intro-title" aria-label={welcomeText}>
-              {welcomeText.split('').map((char, i) => (
-                <span
-                  key={i}
-                  className="intro-char"
-                  style={{ animationDelay: `${0.3 + i * 0.045}s` }}
-                >
-                  {char === ' ' ? '\u00A0' : char}
-                </span>
-              ))}
-            </h1>
+            {/* Right Side: Profile Photo */}
+            <div className="intro-welcome-right">
+              <div className="intro-welcome-photo-wrap">
+                <div className="intro-photo-glow" />
 
-            <p className="intro-subtitle">
-              Knowledge that moves you forward · Curated digital books, guides &amp; study notes
-            </p>
+                <div className="intro-photo-frame intro-welcome-photo-frame">
+                  <img
+                    src="/image/Confident Young Man in White Shirt.png"
+                    alt="Mohit Kumar – TheMohitFact"
+                    className="intro-photo-img"
+                    loading="eager"
+                    decoding="async"
+                    onError={(e) => {
+                      const target = e.currentTarget
+                      if (!target.src.endsWith('mohit-portrait.png')) {
+                        target.src = '/image/mohit-portrait.png'
+                      }
+                    }}
+                  />
+                  <div className="intro-photo-sheen" />
+                </div>
 
-            {/* Progress bar */}
-            <div className="intro-progress-bar-wrap">
-              <div className="intro-progress-bar-fill" />
+                <div className="intro-badge">
+                  <span className="intro-badge-pulse" />
+                  <span>Mohit Kumar · TheMohitFact</span>
+                </div>
+              </div>
             </div>
           </div>
-        )}
+        </div>
+      )}
 
-        {/* ── PHASE: photo ── */}
-        {showPhoto && (
-          <div className={`intro-photo-wrapper${phase === 'photo' ? ' intro-photo-enter' : ''}`}>
-            <div className="intro-photo-glow" />
+      {/* ── STEP 2: LOADING SCREEN (Center Photo + Name + Circular Glow + Loading Animation) ── */}
+      {isLoading && (
+        <div className="intro-loading-stage">
+          {/* Centered Profile Picture with Glowing Circular Rings */}
+          <div className="intro-loading-photo-wrap">
+            <div className="intro-loading-glow" />
+            <div className="intro-loading-rings">
+              <span className="ring-pulse ring-1" />
+              <span className="ring-pulse ring-2" />
+            </div>
 
-            <div className="intro-photo-frame">
+            <div className="intro-photo-frame intro-loading-photo-frame">
               <img
                 src="/image/Confident Young Man in White Shirt.png"
                 alt="Mohit Kumar – TheMohitFact"
@@ -124,22 +170,33 @@ export default function WelcomeIntro() {
                 loading="eager"
                 decoding="async"
                 onError={(e) => {
-                  const t = e.currentTarget
-                  if (!t.src.endsWith('mohit-portrait.png')) {
-                    t.src = '/image/mohit-portrait.png'
+                  const target = e.currentTarget
+                  if (!target.src.endsWith('mohit-portrait.png')) {
+                    target.src = '/image/mohit-portrait.png'
                   }
                 }}
               />
               <div className="intro-photo-sheen" />
             </div>
-
-            <div className="intro-badge">
-              <span className="intro-badge-pulse" />
-              <span>Mohit Kumar · TheMohitFact</span>
-            </div>
           </div>
-        )}
-      </div>
+
+          {/* Prominent Name */}
+          <h2 className="intro-loading-name">
+            MOHIT KUMAR – THEMOHITFACT
+          </h2>
+
+          {/* Smooth Loading Progress Animation */}
+          <div className="intro-progress-bar-wrap">
+            <div className="intro-progress-bar-fill intro-progress-fast" />
+          </div>
+
+          {/* Subtitle / Status */}
+          <p className="intro-loading-status">
+            <span className="intro-loading-dot" />
+            INITIALIZING KNOWLEDGE HUB...
+          </p>
+        </div>
+      )}
     </div>
   )
 }

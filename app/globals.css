@@ -1882,7 +1882,7 @@ label.f {
   background: #05020d;
   overflow: hidden;
   opacity: 1;
-  transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1), transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .intro-overlay.intro-fade-out {
@@ -1891,6 +1891,7 @@ label.f {
   pointer-events: none;
 }
 
+/* Ambient Animated Backdrop */
 .intro-backdrop {
   position: absolute;
   inset: 0;
@@ -1960,6 +1961,7 @@ label.f {
   opacity: 0.7;
 }
 
+/* Skip Button */
 .intro-skip-btn {
   position: absolute;
   top: 28px;
@@ -1989,45 +1991,178 @@ label.f {
   box-shadow: 0 0 24px rgba(168, 85, 247, 0.45);
 }
 
-.intro-center-stage {
+/* ──────────────────────────────────────────────────────────────────────────
+   STEP 1: WELCOME STAGE (Text Left + Photo Right Together)
+   ────────────────────────────────────────────────────────────────────────── */
+.intro-welcome-stage {
   position: relative;
   z-index: 5;
+  width: 100%;
   display: flex;
-  flex-direction: column;
+  justify-content: center;
   align-items: center;
-  text-align: center;
-  max-width: 820px;
-  padding: 24px;
+  animation: introStageFadeIn 0.7s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
-.intro-photo-wrapper {
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  margin-bottom: 26px;
-  animation: introPhotoEntrance 1s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-}
-
-@keyframes introPhotoEntrance {
+@keyframes introStageFadeIn {
   0% {
     opacity: 0;
-    transform: scale(0.82) translateY(28px);
+    transform: scale(0.96);
   }
   100% {
     opacity: 1;
-    transform: scale(1) translateY(0);
+    transform: scale(1);
+  }
+}
+
+.intro-welcome-grid {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  max-width: 1120px;
+  width: 100%;
+  gap: 56px;
+  padding: 32px 40px;
+}
+
+/* Left Side: Welcome Text */
+.intro-welcome-left {
+  flex: 1.25;
+  text-align: left;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.intro-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.8rem;
+  font-weight: 800;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--lavender);
+  margin-bottom: 14px;
+  padding: 6px 14px;
+  border-radius: 999px;
+  background: rgba(168, 85, 247, 0.12);
+  border: 1px solid rgba(168, 85, 247, 0.3);
+  backdrop-filter: blur(10px);
+  opacity: 0;
+  animation: introFadeUp 0.6s ease 0.05s forwards;
+}
+
+.intro-title {
+  font-family: var(--font-grotesk), sans-serif;
+  font-size: clamp(2.3rem, 4.8vw, 4.2rem);
+  font-weight: 800;
+  letter-spacing: -0.025em;
+  line-height: 1.08;
+  margin-bottom: 16px;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.intro-title-left {
+  justify-content: flex-start;
+}
+
+.intro-char {
+  display: inline-block;
+  opacity: 0;
+  transform: translateY(22px) scale(0.85);
+  filter: blur(6px);
+  background: linear-gradient(135deg, #ffffff 0%, #e0e7ff 25%, #c084fc 50%, #ec4899 75%, #38bdf8 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-shadow: 0 0 28px rgba(168, 85, 247, 0.5);
+  animation: introLetterReveal 0.55s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes introLetterReveal {
+  0% {
+    opacity: 0;
+    transform: translateY(22px) scale(0.85);
+    filter: blur(6px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    filter: blur(0);
+  }
+}
+
+.intro-subtitle {
+  font-size: clamp(0.95rem, 1.8vw, 1.15rem);
+  color: var(--tx2);
+  max-width: 50ch;
+  line-height: 1.6;
+  opacity: 0;
+  animation: introFadeUp 0.7s ease 0.5s forwards;
+  margin: 0;
+}
+
+.intro-subtitle-left {
+  text-align: left;
+}
+
+.intro-creator-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 24px;
+  padding: 8px 18px;
+  border-radius: 999px;
+  background: rgba(18, 10, 36, 0.85);
+  border: 1px solid rgba(168, 85, 247, 0.4);
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #f3e8ff;
+  backdrop-filter: blur(12px);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5), 0 0 15px rgba(168, 85, 247, 0.25);
+  opacity: 0;
+  animation: introFadeUp 0.7s ease 0.7s forwards;
+}
+
+/* Right Side: Welcome Photo */
+.intro-welcome-right {
+  flex: 0.95;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.intro-welcome-photo-wrap {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  animation: introWelcomePhotoEntrance 0.85s cubic-bezier(0.16, 1, 0.3, 1) 0.1s both;
+}
+
+@keyframes introWelcomePhotoEntrance {
+  0% {
+    opacity: 0;
+    transform: translateX(45px) scale(0.9);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0) scale(1);
   }
 }
 
 .intro-photo-glow {
   position: absolute;
-  width: 220px;
-  height: 220px;
-  top: -15px;
+  width: 290px;
+  height: 290px;
+  top: -20px;
   border-radius: 50%;
   background: radial-gradient(circle, rgba(168, 85, 247, 0.65) 0%, rgba(56, 189, 248, 0.45) 45%, rgba(236, 72, 153, 0.35) 70%, transparent 100%);
-  filter: blur(40px);
+  filter: blur(48px);
   z-index: 0;
   animation: introPulseGlow 3.5s ease-in-out infinite alternate;
 }
@@ -2039,8 +2174,6 @@ label.f {
 
 .intro-photo-frame {
   position: relative;
-  width: 180px;
-  height: 180px;
   border-radius: 50%;
   overflow: hidden;
   padding: 4px;
@@ -2054,6 +2187,11 @@ label.f {
     0 0 35px rgba(168, 85, 247, 0.55),
     0 0 20px rgba(56, 189, 248, 0.4);
   z-index: 2;
+}
+
+.intro-welcome-photo-frame {
+  width: 250px;
+  height: 250px;
 }
 
 .intro-photo-img {
@@ -2075,7 +2213,7 @@ label.f {
   inset: 0;
   border-radius: 50%;
   pointer-events: none;
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.3) 0%, transparent 45%, rgba(255, 255, 255, 0.08) 100%);
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.35) 0%, transparent 45%, rgba(255, 255, 255, 0.08) 100%);
   mix-blend-mode: overlay;
 }
 
@@ -2083,7 +2221,7 @@ label.f {
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  margin-top: 14px;
+  margin-top: 16px;
   padding: 6px 16px;
   border-radius: 999px;
   background: rgba(18, 10, 36, 0.85);
@@ -2113,72 +2251,170 @@ label.f {
   50% { transform: scale(1.4); opacity: 0.6; }
 }
 
-.intro-text-area {
-  margin-top: 4px;
-}
-
-.intro-eyebrow {
-  font-size: 0.82rem;
-  font-weight: 800;
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
-  color: var(--lavender);
-  margin-bottom: 12px;
-  opacity: 0;
-  animation: introFadeUp 0.8s ease 0.45s forwards;
-}
-
-.intro-title {
-  font-family: var(--font-grotesk), sans-serif;
-  font-size: clamp(2.2rem, 5.8vw, 4.4rem);
-  font-weight: 800;
-  letter-spacing: -0.025em;
-  line-height: 1.1;
-  margin-bottom: 16px;
+/* ──────────────────────────────────────────────────────────────────────────
+   STEP 2: LOADING STAGE (Center Photo + Name + Circular Glowing Animation)
+   ────────────────────────────────────────────────────────────────────────── */
+.intro-loading-stage {
+  position: relative;
+  z-index: 5;
   display: flex;
-  flex-wrap: wrap;
+  flex-direction: column;
+  align-items: center;
   justify-content: center;
+  text-align: center;
+  max-width: 600px;
+  padding: 24px;
+  animation: introLoadingEnter 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
-.intro-char {
-  display: inline-block;
-  opacity: 0;
-  transform: translateY(22px) scale(0.85);
-  filter: blur(6px);
-  background: linear-gradient(135deg, #ffffff 0%, #e0e7ff 25%, #c084fc 50%, #ec4899 75%, #38bdf8 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  text-shadow: 0 0 28px rgba(168, 85, 247, 0.5);
-  animation: introLetterReveal 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-}
-
-@keyframes introLetterReveal {
+@keyframes introLoadingEnter {
   0% {
     opacity: 0;
-    transform: translateY(22px) scale(0.85);
-    filter: blur(6px);
+    transform: scale(0.92) translateY(12px);
   }
   100% {
     opacity: 1;
-    transform: translateY(0) scale(1);
-    filter: blur(0);
+    transform: scale(1) translateY(0);
   }
 }
 
-.intro-subtitle {
-  font-size: clamp(0.95rem, 2.2vw, 1.18rem);
-  color: var(--tx2);
-  max-width: 58ch;
-  line-height: 1.6;
-  opacity: 0;
-  animation: introFadeUp 0.8s ease 1.7s forwards;
-  margin: 0 auto;
+.intro-loading-photo-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 22px;
+}
+
+.intro-loading-photo-frame {
+  width: 160px;
+  height: 160px;
+  box-shadow: 
+    0 16px 45px rgba(0, 0, 0, 0.9),
+    0 0 45px rgba(168, 85, 247, 0.65),
+    0 0 25px rgba(56, 189, 248, 0.5);
+}
+
+.intro-loading-glow {
+  position: absolute;
+  width: 220px;
+  height: 220px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(168, 85, 247, 0.7) 0%, rgba(56, 189, 248, 0.45) 50%, transparent 75%);
+  filter: blur(40px);
+  z-index: 0;
+  animation: introPulseGlow 2.5s ease-in-out infinite alternate;
+}
+
+/* Glowing Circular Animation Rings */
+.intro-loading-rings {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.ring-pulse {
+  position: absolute;
+  border-radius: 50%;
+  border: 1.5px solid rgba(168, 85, 247, 0.45);
+  box-shadow: 0 0 15px rgba(168, 85, 247, 0.3);
+}
+
+.ring-1 {
+  width: 205px;
+  height: 205px;
+  animation: ringPulse 2.4s ease-out infinite;
+}
+
+.ring-2 {
+  width: 250px;
+  height: 250px;
+  animation: ringPulse 2.4s ease-out 0.6s infinite;
+}
+
+@keyframes ringPulse {
+  0% {
+    transform: scale(0.92);
+    opacity: 0.8;
+  }
+  100% {
+    transform: scale(1.18);
+    opacity: 0;
+  }
+}
+
+/* Display Name: MOHIT KUMAR – THEMOHITFACT */
+.intro-loading-name {
+  font-family: var(--font-grotesk), sans-serif;
+  font-size: clamp(1.2rem, 3.2vw, 1.7rem);
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  background: linear-gradient(135deg, #ffffff 0%, #e0e7ff 30%, #c084fc 65%, #38bdf8 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-shadow: 0 0 35px rgba(168, 85, 247, 0.65);
+  margin: 0 0 20px 0;
+  animation: introFadeUp 0.6s ease 0.15s both;
+}
+
+/* Loading Progress Bar */
+.intro-progress-bar-wrap {
+  width: min(290px, 75vw);
+  height: 5px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.08);
+  overflow: hidden;
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.5);
+  animation: introFadeUp 0.6s ease 0.25s both;
+}
+
+.intro-progress-bar-fill {
+  height: 100%;
+  border-radius: 999px;
+  background: linear-gradient(90deg, #a855f7 0%, #38bdf8 50%, #ec4899 100%);
+  box-shadow: 0 0 16px rgba(168, 85, 247, 0.95);
+}
+
+.intro-progress-fast {
+  animation: introProgressFast 1.6s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+}
+
+@keyframes introProgressFast {
+  0% { width: 0%; }
+  100% { width: 100%; }
+}
+
+.intro-loading-status {
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--lavender);
+  margin-top: 14px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  animation: introFadeUp 0.6s ease 0.35s both;
+}
+
+.intro-loading-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #38bdf8;
+  box-shadow: 0 0 10px #38bdf8;
+  animation: introDotPulse 1.4s infinite;
 }
 
 @keyframes introFadeUp {
   0% {
     opacity: 0;
-    transform: translateY(16px);
+    transform: translateY(14px);
   }
   100% {
     opacity: 1;
@@ -2186,36 +2422,77 @@ label.f {
   }
 }
 
-.intro-progress-bar-wrap {
-  width: min(300px, 70vw);
-  height: 4px;
-  border-radius: 999px;
-  background: rgba(255, 255, 255, 0.08);
+/* Body overflow lock during intro */
+body:has(.intro-overlay) {
   overflow: hidden;
-  margin-top: 32px;
-  opacity: 0;
-  animation: introFadeUp 0.8s ease 1.8s forwards;
 }
 
-.intro-progress-bar-fill {
-  height: 100%;
-  border-radius: 999px;
-  background: linear-gradient(90deg, #a855f7 0%, #38bdf8 50%, #ec4899 100%);
-  width: 0%;
-  animation: introProgressFill 1.8s cubic-bezier(0.2, 0.8, 0.2, 1) 1.8s forwards;
-  box-shadow: 0 0 14px rgba(168, 85, 247, 0.85);
-}
-
-@keyframes introProgressFill {
-  0% { width: 0%; }
-  100% { width: 100%; }
-}
-
-@media (max-width: 600px) {
-  .intro-photo-frame {
-    width: 145px;
-    height: 145px;
+/* ──────────────────────────────────────────────────────────────────────────
+   RESPONSIVE DESIGN (Desktop, Tablet, Mobile)
+   ────────────────────────────────────────────────────────────────────────── */
+@media (max-width: 899px) {
+  .intro-welcome-grid {
+    flex-direction: column-reverse;
+    text-align: center;
+    gap: 24px;
+    padding: 24px 20px;
+    justify-content: center;
   }
+
+  .intro-welcome-left {
+    align-items: center;
+    text-align: center;
+  }
+
+  .intro-title-left {
+    justify-content: center;
+    font-size: clamp(1.8rem, 6.2vw, 2.7rem);
+  }
+
+  .intro-subtitle-left {
+    text-align: center;
+  }
+
+  .intro-welcome-photo-frame {
+    width: 175px;
+    height: 175px;
+  }
+
+  .intro-welcome-photo-wrap {
+    animation-name: introWelcomePhotoEntranceMobile;
+  }
+
+  @keyframes introWelcomePhotoEntranceMobile {
+    0% {
+      opacity: 0;
+      transform: translateY(24px) scale(0.9);
+    }
+    100% {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+  }
+
+  .intro-photo-glow {
+    width: 220px;
+    height: 220px;
+  }
+
+  .intro-loading-photo-frame {
+    width: 135px;
+    height: 135px;
+  }
+
+  .ring-1 {
+    width: 175px;
+    height: 175px;
+  }
+
+  .ring-2 {
+    width: 215px;
+    height: 215px;
+  }
+
   .intro-skip-btn {
     top: 18px;
     right: 18px;
@@ -2224,29 +2501,23 @@ label.f {
   }
 }
 
-/* ── Phase-based intro animation helpers ───────────────────────── */
-
-/* Text phase: fades in as a whole block */
-.intro-text-enter {
-  animation: introBlockEnter 0.55s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+@media (max-height: 700px) and (orientation: landscape) {
+  .intro-welcome-photo-frame {
+    width: 150px;
+    height: 150px;
+  }
+  .intro-loading-photo-frame {
+    width: 110px;
+    height: 110px;
+  }
+  .intro-title {
+    font-size: 1.8rem;
+  }
 }
 
-@keyframes introBlockEnter {
-  0%   { opacity: 0; transform: translateY(16px); }
-  100% { opacity: 1; transform: translateY(0); }
-}
-
-/* Photo phase: separate entrance keyframe (also used by .intro-photo-wrapper) */
-.intro-photo-enter {
-  animation: introPhotoEntrance 1s cubic-bezier(0.16, 1, 0.3, 1) forwards !important;
-}
-
-/* Body overflow lock during intro */
-body:has(.intro-overlay) {
-  overflow: hidden;
-}
-
-/* ── Reduced-motion ─────────────────────────────────────────────── */
+/* ──────────────────────────────────────────────────────────────────────────
+   REDUCED MOTION ACCESSIBILITY
+   ────────────────────────────────────────────────────────────────────────── */
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
     animation-duration: 0.01ms !important;
