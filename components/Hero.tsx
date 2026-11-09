@@ -5,13 +5,13 @@ import Link from 'next/link'
 
 interface CardItem {
   id: string
+  theme: 'amber' | 'blue' | 'emerald'
   href: string
   badgeText: string
-  badgeBg: string
-  badgeBorder: string
   icon: string
   title: string
   subtitle: string
+  actionText: string
   bars: Array<{ width: string; gradient: string }>
   baseAngle: number
   baseZ: number
@@ -21,17 +21,17 @@ interface CardItem {
 const CARDS_DATA: CardItem[] = [
   {
     id: 'pdf-guide',
+    theme: 'amber',
     href: '/books?fmt=PDF',
     badgeText: 'PDF GUIDE',
-    badgeBg: 'rgba(168, 85, 247, 0.25)',
-    badgeBorder: 'rgba(168, 85, 247, 0.55)',
     icon: '📄',
     title: 'Workbooks & Guides',
     subtitle: 'Actionable step-by-step master guides',
+    actionText: 'Explore PDF Guide',
     bars: [
-      { width: '85%', gradient: 'linear-gradient(90deg, #a855f7, transparent)' },
-      { width: '65%', gradient: 'linear-gradient(90deg, #ec4899, transparent)' },
-      { width: '75%', gradient: 'linear-gradient(90deg, #38bdf8, transparent)' },
+      { width: '85%', gradient: 'linear-gradient(90deg, #ff7a00, #ffaa33, transparent)' },
+      { width: '65%', gradient: 'linear-gradient(90deg, #ff9500, transparent)' },
+      { width: '75%', gradient: 'linear-gradient(90deg, #ff6600, #ffbb44, transparent)' },
     ],
     baseAngle: -8,
     baseZ: 20,
@@ -44,17 +44,17 @@ const CARDS_DATA: CardItem[] = [
   },
   {
     id: 'epub-book',
+    theme: 'blue',
     href: '/books?fmt=EPUB',
     badgeText: 'EPUB BOOK',
-    badgeBg: 'rgba(236, 72, 153, 0.25)',
-    badgeBorder: 'rgba(236, 72, 153, 0.55)',
     icon: '📚',
     title: 'Digital Books',
     subtitle: 'Read anywhere on tablet, phone & laptop',
+    actionText: 'Explore EPUB Book',
     bars: [
-      { width: '90%', gradient: 'linear-gradient(90deg, #ec4899, #a855f7)' },
-      { width: '55%', gradient: 'linear-gradient(90deg, #ec4899, transparent)' },
-      { width: '70%', gradient: 'linear-gradient(90deg, #c084fc, transparent)' },
+      { width: '90%', gradient: 'linear-gradient(90deg, #38bdf8, #60a5fa, transparent)' },
+      { width: '55%', gradient: 'linear-gradient(90deg, #0ea5e9, transparent)' },
+      { width: '70%', gradient: 'linear-gradient(90deg, #38bdf8, #818cf8, transparent)' },
     ],
     baseAngle: 1,
     baseZ: 70,
@@ -67,17 +67,17 @@ const CARDS_DATA: CardItem[] = [
   },
   {
     id: 'study-notes',
+    theme: 'emerald',
     href: '/#explore',
     badgeText: 'STUDY NOTES',
-    badgeBg: 'rgba(56, 189, 248, 0.25)',
-    badgeBorder: 'rgba(56, 189, 248, 0.55)',
     icon: '🧠',
     title: 'Mastery Notes',
     subtitle: 'Distilled psychological & life frameworks',
+    actionText: 'Explore Study Notes',
     bars: [
-      { width: '80%', gradient: 'linear-gradient(90deg, #38bdf8, #a855f7)' },
-      { width: '95%', gradient: 'linear-gradient(90deg, #38bdf8, transparent)' },
-      { width: '60%', gradient: 'linear-gradient(90deg, #a855f7, transparent)' },
+      { width: '80%', gradient: 'linear-gradient(90deg, #10b981, #34d399, transparent)' },
+      { width: '95%', gradient: 'linear-gradient(90deg, #059669, #6ee7b7, transparent)' },
+      { width: '60%', gradient: 'linear-gradient(90deg, #34d399, transparent)' },
     ],
     baseAngle: 8,
     baseZ: 120,
@@ -137,17 +137,17 @@ function HeroResourceCard({ card }: { card: CardItem }) {
 
   return (
     <div
-      className={`fc-slot ${isHovered ? 'is-hovered' : ''} ${isPressed ? 'is-pressed' : ''}`}
+      className={`fc-slot fc-slot-${card.theme} ${isHovered ? 'is-hovered' : ''} ${isPressed ? 'is-pressed' : ''}`}
       style={card.slotStyle}
     >
-      {/* Soft Ambient Glow Aura Behind Each Card */}
-      <div className="fc-ambient-glow" />
+      {/* Soft Ambient Volumetric Glow Behind Each Card */}
+      <div className={`fc-ambient-glow fc-ambient-glow-${card.theme}`} />
 
       {/* Clickable Card with 3D Hover Zoom and Tilt */}
       <Link
         ref={cardRef}
         href={card.href}
-        className={`fc ${isHovered ? 'is-hovered' : ''} ${isPressed ? 'is-pressed' : ''}`}
+        className={`fc fc-${card.theme} ${isHovered ? 'is-hovered' : ''} ${isPressed ? 'is-pressed' : ''}`}
         style={
           {
             ...transformStyle,
@@ -162,43 +162,32 @@ function HeroResourceCard({ card }: { card: CardItem }) {
         onTouchEnd={() => setIsPressed(false)}
         aria-label={`${card.badgeText}: ${card.title} - ${card.subtitle}. Click to explore.`}
       >
+        {/* Dynamic Internal Luminous Neon Blooms (Signature effect from 2nd photo) */}
+        <div className={`fc-glow-top fc-glow-top-${card.theme}`} />
+        <div className={`fc-glow-bottom fc-glow-bottom-${card.theme}`} />
+
         {/* Subtle moving light reflection / sheen */}
         <div className="fc-sheen">
           <div className="fc-sheen-glare" />
           <div className="fc-sheen-sweep" />
         </div>
 
-        {/* Card Header */}
+        {/* Card Header: Icon box + Badge */}
         <div className="fc-top">
-          <span
-            className="fc-badge"
-            style={{
-              background: card.badgeBg,
-              borderColor: card.badgeBorder,
-            }}
-          >
+          <div className={`fc-icon fc-icon-${card.theme}`}>{card.icon}</div>
+          <span className={`fc-badge fc-badge-${card.theme}`}>
             {card.badgeText}
           </span>
-          <div className="fc-icon">{card.icon}</div>
         </div>
 
-        {/* Card Miniature Page Lines */}
-        <div
-          style={{
-            margin: '14px 0',
-            display: 'flex',
-            flexDirection: 'column',
-            gap: 6,
-            opacity: 0.85,
-          }}
-        >
+        {/* Card Miniature Animated Preview Bars */}
+        <div className="fc-bars">
           {card.bars.map((bar, i) => (
             <div
               key={i}
+              className={`fc-bar fc-bar-${card.theme}`}
               style={{
-                height: 6,
                 width: bar.width,
-                borderRadius: 3,
                 background: bar.gradient,
               }}
             />
@@ -207,10 +196,10 @@ function HeroResourceCard({ card }: { card: CardItem }) {
 
         {/* Card Bottom Details & Click Callout */}
         <div className="fc-bottom">
-          <span className="fc-title">{card.title}</span>
+          <span className={`fc-title fc-title-${card.theme}`}>{card.title}</span>
           <small>{card.subtitle}</small>
-          <div className="fc-action-hint">
-            <span>Explore {card.badgeText}</span>
+          <div className={`fc-action-hint fc-action-${card.theme}`}>
+            <span>{card.actionText}</span>
             <span className="fc-arrow">→</span>
           </div>
         </div>
@@ -263,11 +252,11 @@ export default function Hero({ count }: { count: number }) {
             <span>Instant Free Downloads</span>
           </div>
           <div className="hero-feature-pill">
-            <span className="hero-dot" style={{ background: '#ec4899', boxShadow: '0 0 8px #ec4899' }} />
+            <span className="hero-dot" style={{ background: '#38bdf8', boxShadow: '0 0 8px #38bdf8' }} />
             <span>Live PDF Preview</span>
           </div>
           <div className="hero-feature-pill">
-            <span className="hero-dot" style={{ background: '#a855f7', boxShadow: '0 0 8px #a855f7' }} />
+            <span className="hero-dot" style={{ background: '#10b981', boxShadow: '0 0 8px #10b981' }} />
             <span>Verified Study Notes</span>
           </div>
         </div>
