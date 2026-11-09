@@ -3,68 +3,64 @@
 import React, { useEffect, useState } from 'react'
 import { usePathname } from 'next/navigation'
 
-type Phase = 'welcome' | 'loading' | 'exit' | 'done'
+/**
+ * Fully automatic cinematic intro sequence:
+ *   STEP 1  'text'         — Welcome text appears (fade-in, slide-up, letter reveal)
+ *   STEP 2  'textAndPhoto' — Profile image smoothly revealed beside the text
+ *   STEP 3  'loading'      — Centered loading screen (photo, name, progress bar)
+ *   STEP 4  'exit'         — Cinematic fade/zoom out revealing the homepage
+ *           'done'         — Overlay unmounted from DOM
+ *
+ * No skip button. No user interaction required. Fully automatic.
+ */
+type Phase = 'text' | 'textAndPhoto' | 'loading' | 'exit' | 'done'
 
 export default function WelcomeIntro() {
   const pathname = usePathname()
-  // Run on the root/homepage or initial entrance
   const isHomePage = !pathname || pathname === '/'
 
-  // Start in 'welcome' phase so the overlay is present immediately in HTML (prevents flash)
-  const [phase, setPhase] = useState<Phase>('welcome')
+  // Start in 'text' so the overlay is rendered immediately in SSR HTML (prevents homepage flash)
+  const [phase, setPhase] = useState<Phase>('text')
 
   useEffect(() => {
-    // If user directly opened a deep internal page like /books or /dashboard, skip intro
+    // Skip intro entirely on deep internal pages (/books, /dashboard, etc.)
     if (!isHomePage) {
       setPhase('done')
       return
     }
 
-    // STEP 1: Welcome Screen (Text on left + Photo on right together) -> 0.0s to 2.6s
-    const t1 = setTimeout(() => {
-      setPhase('loading')
-    }, 2600)
-
-    // STEP 2: Loading Screen (Center Photo + Name + Loading animation) -> 2.6s to 4.3s
-    const t2 = setTimeout(() => {
-      setPhase('exit')
-    }, 4300)
-
-    // STEP 3: Reveal Homepage smoothly & unmount overlay -> 4.3s to 5.0s
-    const t3 = setTimeout(() => {
-      setPhase('done')
-    }, 5000)
+    // Fully automatic timed sequence — no interaction needed
+    // STEP 1 → STEP 2:  Welcome text finishes → profile image slides in
+    const t1 = setTimeout(() => setPhase('textAndPhoto'), 1500)
+    // STEP 2 → STEP 3:  Both visible → transition to centered loading screen
+    const t2 = setTimeout(() => setPhase('loading'), 3200)
+    // STEP 3 → STEP 4:  Loading done → begin cinematic exit
+    const t3 = setTimeout(() => setPhase('exit'), 4700)
+    // STEP 4 → Done:    Unmount overlay completely
+    const t4 = setTimeout(() => setPhase('done'), 5400)
 
     return () => {
       clearTimeout(t1)
       clearTimeout(t2)
       clearTimeout(t3)
+      clearTimeout(t4)
     }
   }, [isHomePage])
 
-  const handleSkip = () => {
-    setPhase('exit')
-    setTimeout(() => {
-      setPhase('done')
-    }, 500)
-  }
-
-  // Once completely finished or if not on homepage, remove from DOM
-  if (phase === 'done' || !isHomePage) {
-    return null
-  }
+  // Once complete or not on homepage — render nothing
+  if (phase === 'done' || !isHomePage) return null
 
   const welcomeText = "WELCOME TO MOHIT'S WORLD"
   const isExiting = phase === 'exit'
-  const isWelcome = phase === 'welcome'
-  const isLoading = phase === 'loading' || isExiting
+  const showWelcome = phase === 'text' || phase === 'textAndPhoto'
+  const photoRevealed = phase === 'textAndPhoto'
+  const showLoading = phase === 'loading' || isExiting
 
   return (
     <div
       className={`intro-overlay${isExiting ? ' intro-fade-out' : ''}`}
-      role="dialog"
-      aria-modal="true"
-      aria-label="Welcome Intro — TheMohitFact Hub"
+      role="status"
+      aria-label="Welcome Intro"
     >
       {/* Cinematic Ambient Background */}
       <div className="intro-backdrop">
@@ -74,24 +70,11 @@ export default function WelcomeIntro() {
         <div className="intro-grid-pattern" />
       </div>
 
-      {/* Skip Button */}
-      {!isExiting && (
-        <button
-          type="button"
-          className="intro-skip-btn"
-          onClick={handleSkip}
-          aria-label="Skip intro to homepage"
-        >
-          <span>Skip Intro</span>
-          <span style={{ fontSize: '1rem', lineHeight: 1 }}>→</span>
-        </button>
-      )}
-
-      {/* ── STEP 1: WELCOME SCREEN (Text on Left + Photo on Right Together) ── */}
-      {isWelcome && (
+      {/* ── STEP 1: Welcome Text  |  STEP 2: + Profile Image ── */}
+      {showWelcome && (
         <div className="intro-welcome-stage">
           <div className="intro-welcome-grid">
-            {/* Left Side: Welcome Text */}
+            {/* Left Side — Welcome Text (appears first) */}
             <div className="intro-welcome-left">
               <div className="intro-eyebrow">
                 <span>✦</span> OFFICIAL DIGITAL PLATFORM <span>✦</span>
@@ -119,8 +102,10 @@ export default function WelcomeIntro() {
               </div>
             </div>
 
-            {/* Right Side: Profile Photo */}
-            <div className="intro-welcome-right">
+            {/* Right Side — Profile Photo (revealed automatically after text) */}
+            <div
+              className={`intro-welcome-right${photoRevealed ? ' intro-photo-revealed' : ' intro-photo-hidden'}`}
+            >
               <div className="intro-welcome-photo-wrap">
                 <div className="intro-photo-glow" />
 
@@ -143,7 +128,7 @@ export default function WelcomeIntro() {
 
                 <div className="intro-badge">
                   <span className="intro-badge-pulse" />
-                  <span>Mohit Kumar · TheMohitFact</span>
+                  <span>MOHIT KUMAR • THEMOHITFACT</span>
                 </div>
               </div>
             </div>
@@ -151,8 +136,8 @@ export default function WelcomeIntro() {
         </div>
       )}
 
-      {/* ── STEP 2: LOADING SCREEN (Center Photo + Name + Circular Glow + Loading Animation) ── */}
-      {isLoading && (
+      {/* ── STEP 3: Automatic Loading Screen ── */}
+      {showLoading && (
         <div className="intro-loading-stage">
           {/* Centered Profile Picture with Glowing Circular Rings */}
           <div className="intro-loading-photo-wrap">
@@ -180,9 +165,9 @@ export default function WelcomeIntro() {
             </div>
           </div>
 
-          {/* Prominent Name */}
+          {/* Name */}
           <h2 className="intro-loading-name">
-            MOHIT KUMAR – THEMOHITFACT
+            MOHIT KUMAR • THEMOHITFACT
           </h2>
 
           {/* Smooth Loading Progress Animation */}
@@ -190,7 +175,7 @@ export default function WelcomeIntro() {
             <div className="intro-progress-bar-fill intro-progress-fast" />
           </div>
 
-          {/* Subtitle / Status */}
+          {/* Status */}
           <p className="intro-loading-status">
             <span className="intro-loading-dot" />
             INITIALIZING KNOWLEDGE HUB...
