@@ -1,9 +1,9 @@
-import Library from '@/components/Library'
+import Bookshelf from '@/components/Bookshelf'
 import { ctx, favIdsFor } from '@/lib/data'
 
 export const metadata = {
-  title: 'Books & PDFs — TheMohitFact Hub',
-  description: 'Curated e-books and PDFs to read and download from TheMohitFact.',
+  title: 'Books & PDFs — Premium Digital Library | TheMohitFact Hub',
+  description: 'Interactive 3D bookshelf, curated e-books, and full in-browser reading sanctuary from TheMohitFact.',
 }
 
 export const dynamic = 'force-dynamic'
@@ -31,46 +31,39 @@ export default async function Books() {
     console.error('[Books] Data loading error:', err)
   }
 
+  // Capture all publications: e-books, PDFs, workbooks, and study guides
   const items = (data ?? []).filter(
     (r: any) =>
-      ['E-Books', 'PDF Collection'].includes(r.category) ||
-      ['PDF', 'EPUB'].includes(r.format)
+      ['E-Books', 'PDF Collection', 'Guides', 'Study Materials', 'Notes'].includes(r.category) ||
+      ['PDF', 'EPUB', 'TXT', 'MOBI', 'DOCX'].includes(r.format) ||
+      (r.tags && r.tags.some((t: string) => ['book', 'pdf', 'guide', 'ebook'].includes(t.toLowerCase())))
   )
 
   return (
-    <main className="wrap sec">
-      <div style={{ marginBottom: 36 }}>
-        <div
-          style={{
-            display: 'inline-flex',
-            alignItems: 'center',
-            gap: 6,
-            fontSize: '0.78rem',
-            fontWeight: 700,
-            letterSpacing: '0.08em',
-            textTransform: 'uppercase',
-            color: 'var(--lavender)',
-            marginBottom: 10,
-          }}
-        >
-          <span>✦</span> DIGITAL READING ROOM
+    <main className="wrap sec bs-page-container">
+      {/* Cinematic Bookshelf Header Banner */}
+      <div className="bs-header-banner">
+        <div className="bs-header-badge">
+          <span className="bs-badge-sparkle">✦</span>
+          <span>THEMOHITFACT DIGITAL LIBRARY &amp; READING SANCTUARY</span>
+          <span className="bs-badge-sparkle">✦</span>
         </div>
 
-        <h1 className="dh" style={{ marginBottom: 12 }}>
+        <h1 className="dh bs-header-title">
           Books &amp; <span className="hero-gradient-text">PDF Collection</span>
         </h1>
 
-        <p className="muted" style={{ maxWidth: '62ch', fontSize: '1.08rem' }}>
-          Explore our complete library of books and PDF workbooks. You can read any PDF directly
-          in your browser before downloading, or tap the heart icon to save it to your collection.
+        <p className="muted bs-header-desc">
+          Browse our interactive 3D digital bookshelf. Click any book to inspect its details, rotate its 3D cover,
+          and enter the dedicated in-browser <b>READ NOW</b> reading sanctuary with customizable themes, zoom, and bookmark progress.
         </p>
       </div>
 
-      <Library
-        items={items}
+      {/* Interactive 3D Digital Bookshelf */}
+      <Bookshelf
+        initialBooks={items}
         favIds={favs}
-        books
-        empty="No books or PDFs have been uploaded to this section yet."
+        emptyMessage="No digital books or PDF guides have been uploaded yet. When uploaded via Admin Panel, they will appear dynamically on these shelves."
       />
     </main>
   )

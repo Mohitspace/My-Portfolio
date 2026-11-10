@@ -276,3 +276,4 @@ export default function HeroCinematicBackground() {
     </div>
   )
 }
+

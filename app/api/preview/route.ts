@@ -13,11 +13,11 @@ export async function GET(req: NextRequest) {
 
     const { data: r, error: rError } = await sb
       .from('resources')
-      .select('file_path,access,format,preview_allowed')
+      .select('file_path,access,format,preview_allowed,title,author')
       .eq('id', id)
       .single()
 
-    if (rError || !r || r.format !== 'PDF' || r.preview_allowed === false) {
+    if (rError || !r || r.preview_allowed === false) {
       return NextResponse.json({ error: 'no_preview' }, { status: 404 })
     }
     if (r.access === 'members' && !user) {
@@ -28,15 +28,21 @@ export async function GET(req: NextRequest) {
     if (!serviceKey) return NextResponse.json({ error: 'configuration_missing' }, { status: 500 })
 
     const svc = admin(process.env.NEXT_PUBLIC_SUPABASE_URL!, serviceKey)
+    // 3600 seconds (1 hour) for uninterrupted reading session
     const { data: signedData, error: signError } = await svc.storage
       .from('resources')
-      .createSignedUrl(r.file_path, 300)
+      .createSignedUrl(r.file_path, 3600)
 
     if (signError || !signedData?.signedUrl) {
       return NextResponse.json({ error: 'sign_failed' }, { status: 500 })
     }
 
-    return NextResponse.json({ url: signedData.signedUrl })
+    return NextResponse.json({
+      url: signedData.signedUrl,
+      format: r.format || 'PDF',
+      title: r.title,
+      author: r.author,
+    })
   } catch (err: any) {
     console.error('[API /preview] error:', err)
     return NextResponse.json({ error: err?.message || 'internal_error' }, { status: 500 })
