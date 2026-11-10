@@ -33,34 +33,33 @@ export default function AnimatedBackground() {
     let width = (canvas.width = window.innerWidth)
     let height = (canvas.height = window.innerHeight)
 
-    // Palette: Luxurious Molten Amber, Burnished Copper, Champagne Gold & Diamond Starlight
-    const emberColors = [
-      'rgba(255, 155, 30, ',   // Radiant Molten Amber
-      'rgba(255, 120, 15, ',   // Deep Electric Orange
-      'rgba(255, 185, 55, ',   // Luminous Gold
-      'rgba(255, 215, 115, ',  // Soft Champagne
-      'rgba(255, 245, 220, ',  // White-hot Core
-      'rgba(215, 120, 255, ',  // Subtle Violet Specular Accent
+    // Palette: Ultra-Luxurious Diamond Stardust, Platinum Silver & Celestial Sparkles
+    const starColors = [
+      'rgba(255, 255, 255, ',     // Pure Diamond White
+      'rgba(241, 245, 249, ',     // Platinum Silver
+      'rgba(226, 232, 240, ',     // Crisp Celestial Silver
+      'rgba(216, 240, 255, ',     // Soft Icy Blue Starlight
+      'rgba(238, 232, 255, ',     // Subtle Stardust Shimmer
     ]
 
-    // Scale particle count to screen size
-    const particleCount = Math.min(Math.floor((width * height) / 22000), 55)
+    // Scale particle count to screen size (refined, elegant density)
+    const particleCount = Math.min(Math.floor((width * height) / 24000), 45)
     const embers: Ember[] = []
 
     for (let i = 0; i < particleCount; i++) {
       embers.push({
         x: Math.random() * width,
         y: Math.random() * height,
-        size: Math.random() * 2.2 + 0.6,
-        vx: (Math.random() - 0.5) * 0.2,
-        vy: -Math.random() * 0.45 - 0.15, // Upward floating ember drift
-        swaySpeed: Math.random() * 0.02 + 0.008,
-        swayDist: Math.random() * 1.5 + 0.5,
+        size: Math.random() * 1.5 + 0.5,
+        vx: (Math.random() - 0.5) * 0.15,
+        vy: -Math.random() * 0.3 - 0.08, // Slow, elegant upward cosmic drift
+        swaySpeed: Math.random() * 0.015 + 0.006,
+        swayDist: Math.random() * 1.8 + 0.6,
         swayOffset: Math.random() * Math.PI * 2,
-        alpha: Math.random() * 0.65 + 0.2,
-        targetAlpha: Math.random() * 0.75 + 0.2,
-        pulseSpeed: Math.random() * 0.015 + 0.006,
-        color: emberColors[Math.floor(Math.random() * emberColors.length)],
+        alpha: Math.random() * 0.55 + 0.15,
+        targetAlpha: Math.random() * 0.65 + 0.15,
+        pulseSpeed: Math.random() * 0.012 + 0.005,
+        color: starColors[Math.floor(Math.random() * starColors.length)],
       })
     }
 
@@ -160,40 +159,35 @@ export default function AnimatedBackground() {
 
   return (
     <div className="ambient-scene" aria-hidden="true">
-      {/* 1. Deep Obsidian Base Vignette */}
+      {/* 1. Deep Pitch Black Void Foundation */}
       <div className="ambient-base" />
 
-      {/* 2. Liquid Obsidian & Amber Texture Layer with Smooth Wave Undulation */}
+      {/* 2. Liquid Obsidian Silk Waves (Undulating Monochromatic Dark Sheen) */}
       <div className="ambient-liquid-wrap">
         <div className="ambient-liquid-img" />
         <div className="ambient-liquid-overlay" />
       </div>
 
-      {/* 3. Molten Amber Caustic Pulse (matches glowing focal ring in artwork) */}
-      <div className="ambient-caustic-pool" />
+      {/* 3. Atmospheric Dark Void Pulses (Extremely subtle, breathing depth without color clash) */}
+      <div className="ambient-void-pulse pulse-1" />
+      <div className="ambient-void-pulse pulse-2" />
+      <div className="ambient-void-pulse pulse-3" />
 
-      {/* 4. Sweeping Molten Light Ribbons across curved ridges */}
-      <div className="ambient-light-sweep sweep-1" />
-      <div className="ambient-light-sweep sweep-2" />
-
-      {/* 5. Deep Dimensional Ambient Glow Orbs */}
-      <div className="ambient-glow-orb orb-amber-primary" />
-      <div className="ambient-glow-orb orb-amber-secondary" />
-      <div className="ambient-glow-orb orb-violet-deep" />
-
-      {/* 6. Interactive Specular Cursor Spotlight (follows mouse smoothly) */}
+      {/* 4. Interactive Specular Cursor Spotlight (Soft Pure Silver-White Studio Light) */}
       <div ref={spotlightRef} className="ambient-cursor-spotlight" />
 
-      {/* 7. Subtle Cybernetic Micro-Grid Pattern */}
-      <div className="ambient-grid" />
+      {/* 5. Precision Dark Micro-Grid with Moving Scanner Beam */}
+      <div className="ambient-grid">
+        <div className="ambient-scanner-beam" />
+      </div>
 
-      {/* 8. Floating Golden Embers & Stardust Canvas */}
+      {/* 6. Floating Diamond Stardust & Celestial Particles Canvas */}
       <canvas ref={canvasRef} className="ambient-canvas" />
 
-      {/* 9. Perimeter Contrast Vignette for crystal-clear readability */}
+      {/* 7. Deep Perimeter Contrast Vignette for crystal-clear text readability */}
       <div className="ambient-vignette" />
 
-      {/* 10. Filmic Texture Grain */}
+      {/* 8. Ultra-Fine Filmic Noise */}
       <div className="ambient-noise" />
     </div>
   )

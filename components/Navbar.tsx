@@ -65,7 +65,7 @@ export default function Navbar({ email }: { email: string | null }) {
   )
 
   return (
-    <nav className="nav" style={scrolled ? { background: 'rgba(5, 2, 12, 0.88)', boxShadow: '0 12px 35px rgba(0, 0, 0, 0.6), 0 1px 0 rgba(168, 85, 247, 0.25) inset' } : undefined}>
+    <nav className="nav" style={scrolled ? { background: 'rgba(3, 2, 5, 0.92)', boxShadow: '0 12px 35px rgba(0, 0, 0, 0.7), 0 1px 0 rgba(255, 255, 255, 0.08) inset' } : undefined}>
       <div className="wrap">
         <Link href="/" className="logo">
           TheMohitFact Hub
