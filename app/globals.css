@@ -860,9 +860,10 @@ button {
   position: relative;
   z-index: 10;
   width: 100%;
+  max-width: 1420px;
   display: grid;
-  grid-template-columns: 1.05fr 0.95fr;
-  gap: 40px;
+  grid-template-columns: minmax(360px, 440px) 1fr;
+  gap: 48px;
   align-items: center;
   padding-top: 24px;
   padding-bottom: 30px;
@@ -1080,240 +1081,227 @@ button {
 }
 
 /* ==========================================================================
-   6. 3D FLOATING CARDS & INTERACTIVE SYSTEM
+   6. 3D HERO CARDS & FEATURE ROW (SIDE-BY-SIDE / SPACED OUT "DOOR DOOR")
    ========================================================================== */
-.stack {
-  perspective: 1200px;
-  height: 440px;
-  position: relative;
+.hero-cards-container {
+  width: 100%;
   display: flex;
-  align-items: center;
-  justify-content: center;
+  flex-direction: column;
+  gap: 24px;
 }
 
-.stack-glow-backdrop {
-  position: absolute;
-  width: 340px;
-  height: 340px;
-  border-radius: 50%;
-  background: radial-gradient(circle, rgba(255, 255, 255, 0.06) 0%, rgba(168, 85, 247, 0.08) 45%, transparent 70%);
-  filter: blur(70px);
-  pointer-events: none;
-  animation: pulseBackdrop 6s ease-in-out infinite alternate;
+/* 3 Cards Side-by-Side Grid with Generous Spacing ("Door Door") */
+.hero-cards-row {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 20px;
+  width: 100%;
+  align-items: stretch;
 }
 
-@keyframes pulseBackdrop {
-  0% {
-    transform: scale(0.9);
-    opacity: 0.6;
-  }
-
-  100% {
-    transform: scale(1.15);
-    opacity: 0.9;
-  }
-}
-
-.tilt {
-  position: absolute;
-  inset: 0;
-  transform-style: preserve-3d;
-}
-
-@property --a {
-  syntax: '<angle>';
-  inherits: false;
-  initial-value: 0deg;
-}
-
-@keyframes spinConic {
-  to {
-    --a: 360deg;
-  }
-}
-
-/* Card Slot (Handles layout position, overlapping z-index & gentle levitation) */
+/* Card Slot with Gentle Floating Levitation */
 .fc-slot {
-  position: absolute;
-  width: 228px;
-  height: 310px;
-  transform-style: preserve-3d;
+  position: relative;
+  width: 100%;
+  min-height: 330px;
+  display: flex;
+  flex-direction: column;
   animation: floatCardSlot 6s ease-in-out infinite;
-  display: block;
   user-select: none;
-}
-
-.fc-slot:nth-child(1) {
-  left: 0%;
-  top: 55px;
-  animation-delay: 0s;
-  z-index: 1;
-}
-
-.fc-slot:nth-child(2) {
-  left: 26%;
-  top: 15px;
-  animation-delay: -2s;
-  z-index: 2;
-}
-
-.fc-slot:nth-child(3) {
-  left: 52%;
-  top: 65px;
-  animation-delay: -4s;
-  z-index: 3;
 }
 
 .fc-slot.is-hovered,
 .fc-slot:hover {
-  z-index: 50 !important;
+  z-index: 20;
 }
 
 @keyframes floatCardSlot {
   0% {
     transform: translateY(0px);
   }
-
   50% {
-    transform: translateY(-12px);
+    transform: translateY(-8px);
   }
-
   100% {
     transform: translateY(0px);
   }
 }
 
 /* ──────────────────────────────────────────────────────────────────────────
-   DIFFUSE VOLUMETRIC AURA BEHIND EACH CARD (Matched to Photo Exactly)
+   DIFFUSE VOLUMETRIC AURA BEHIND / UNDER EACH CARD
    ────────────────────────────────────────────────────────────────────────── */
 .fc-ambient-glow {
   position: absolute;
-  inset: -14px;
-  border-radius: 36px;
+  bottom: -16px;
+  left: 8%;
+  width: 84%;
+  height: 70px;
+  border-radius: 50%;
   filter: blur(28px);
-  opacity: 0.45;
+  opacity: 0.55;
   pointer-events: none;
-  transition: opacity 0.4s cubic-bezier(0.16, 1, 0.3, 1), filter 0.4s ease, transform 0.4s ease;
+  transition: opacity 0.35s ease, filter 0.35s ease, transform 0.35s ease;
   z-index: 0;
   will-change: transform, opacity, filter;
-}
-
-.fc-ambient-glow-cyan,
-.fc-ambient-glow-blue {
-  background: radial-gradient(circle, rgba(0, 136, 255, 0.6) 0%, rgba(56, 189, 248, 0.25) 50%, transparent 75%);
-}
-
-.fc-ambient-glow-magenta {
-  background: radial-gradient(circle, rgba(236, 72, 153, 0.6) 0%, rgba(168, 85, 247, 0.25) 50%, transparent 75%);
-}
-
-.fc-ambient-glow-pink,
-.fc-ambient-glow-purple {
-  background: radial-gradient(circle, rgba(244, 63, 94, 0.6) 0%, rgba(168, 85, 247, 0.25) 50%, transparent 75%);
 }
 
 .fc-slot:hover .fc-ambient-glow,
 .fc-slot.is-hovered .fc-ambient-glow {
   opacity: 0.95;
-  filter: blur(38px);
-  transform: scale(1.18);
+  filter: blur(34px);
+  transform: scale(1.15);
+}
+
+.fc-ambient-glow-amber {
+  background: radial-gradient(circle, rgba(255, 106, 0, 0.75) 0%, rgba(255, 140, 0, 0.3) 50%, transparent 75%);
+}
+
+.fc-ambient-glow-blue,
+.fc-ambient-glow-cyan {
+  background: radial-gradient(circle, rgba(0, 210, 255, 0.75) 0%, rgba(0, 140, 255, 0.3) 50%, transparent 75%);
+}
+
+.fc-ambient-glow-emerald {
+  background: radial-gradient(circle, rgba(16, 185, 129, 0.75) 0%, rgba(5, 150, 105, 0.3) 50%, transparent 75%);
+}
+
+.fc-ambient-glow-magenta {
+  background: radial-gradient(circle, rgba(236, 72, 153, 0.7) 0%, rgba(168, 85, 247, 0.3) 50%, transparent 75%);
+}
+
+.fc-ambient-glow-pink,
+.fc-ambient-glow-purple {
+  background: radial-gradient(circle, rgba(244, 63, 94, 0.7) 0%, rgba(168, 85, 247, 0.3) 50%, transparent 75%);
 }
 
 /* ──────────────────────────────────────────────────────────────────────────
-   3D HERO CARDS BASE (Sleek Obsidian Glass Body & Neon Glowing Borders)
+   3D HERO CARDS BASE (Dark Obsidian Glass Body with Squircle Corners)
    ────────────────────────────────────────────────────────────────────────── */
 .fc {
   position: relative;
   width: 100%;
   height: 100%;
-  border-radius: 26px;
-  padding: 22px 20px 20px 20px;
+  border-radius: 28px;
+  padding: 24px 20px 22px 20px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  font-family: var(--font-grotesk);
-  font-size: 1.55rem;
-  font-weight: 800;
+  font-family: var(--font-grotesk), sans-serif;
   text-decoration: none;
   color: inherit;
   cursor: pointer;
-  transform-style: preserve-3d;
   overflow: hidden;
-  border-width: 2px;
-  border-style: solid;
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-top: 1px solid rgba(255, 255, 255, 0.22);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  background: rgba(12, 17, 29, 0.78);
+  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.6);
   transition:
-    transform 0.4s cubic-bezier(0.16, 1, 0.3, 1),
-    box-shadow 0.4s cubic-bezier(0.16, 1, 0.3, 1),
-    border-color 0.4s ease;
+    transform 0.35s cubic-bezier(0.16, 1, 0.3, 1),
+    box-shadow 0.35s cubic-bezier(0.16, 1, 0.3, 1),
+    border-color 0.35s ease;
   will-change: transform, box-shadow;
   z-index: 1;
 }
 
-/* ── Card 1: Electric Blue / Cyan Neon Border (Matches Left Card in Photo) ── */
-.fc-cyan,
-.fc-blue {
-  background: linear-gradient(180deg, #10162e 0%, #080c1d 100%);
-  border-color: #0088ff;
-  box-shadow:
-    0 0 18px rgba(0, 136, 255, 0.45),
-    0 16px 36px rgba(0, 0, 0, 0.8),
-    inset 0 0 12px rgba(0, 136, 255, 0.12);
+/* ──────────────────────────────────────────────────────────────────────────
+   LUMINOUS BOTTOM CAUSTIC BLOOM (Signature from Reference Image 1)
+   ────────────────────────────────────────────────────────────────────────── */
+.fc-glow-bottom {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 125px;
+  border-bottom-left-radius: 28px;
+  border-bottom-right-radius: 28px;
+  pointer-events: none;
+  z-index: 1;
+  opacity: 0.88;
+  transition: opacity 0.35s ease, height 0.35s ease;
 }
 
-.fc-cyan.is-hovered,
-.fc-cyan:hover,
+.fc:hover .fc-glow-bottom,
+.fc.is-hovered .fc-glow-bottom {
+  opacity: 1;
+  height: 150px;
+}
+
+/* Card 1: Warm Molten Amber / Orange Bottom Bloom */
+.fc-glow-bottom-amber {
+  background: radial-gradient(ellipse 95% 75% at 50% 100%, rgba(255, 106, 0, 0.58) 0%, rgba(255, 140, 0, 0.22) 45%, transparent 75%);
+  border-bottom: 2px solid #ff6a00;
+}
+
+/* Card 2: Electric Ice Blue / Cyan Bottom Bloom */
+.fc-glow-bottom-blue,
+.fc-glow-bottom-cyan {
+  background: radial-gradient(ellipse 95% 75% at 50% 100%, rgba(0, 210, 255, 0.58) 0%, rgba(0, 140, 255, 0.22) 45%, transparent 75%);
+  border-bottom: 2px solid #00d2ff;
+}
+
+/* Card 3: Radiant Emerald Green Bottom Bloom */
+.fc-glow-bottom-emerald {
+  background: radial-gradient(ellipse 95% 75% at 50% 100%, rgba(16, 185, 129, 0.58) 0%, rgba(0, 230, 118, 0.22) 45%, transparent 75%);
+  border-bottom: 2px solid #10b981;
+}
+
+/* ── Card 1: Amber Glow & Styling (Left Card in Reference Image 1) ── */
+.fc-amber {
+  background: linear-gradient(180deg, rgba(18, 18, 28, 0.82) 0%, rgba(24, 12, 6, 0.9) 100%);
+  border-color: rgba(255, 106, 0, 0.32);
+  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.65), 0 10px 30px -10px rgba(255, 106, 0, 0.3);
+}
+
+.fc-amber:hover,
+.fc-amber.is-hovered {
+  border-color: rgba(255, 140, 0, 0.75);
+  box-shadow: 0 24px 50px rgba(0, 0, 0, 0.8), 0 16px 40px -6px rgba(255, 106, 0, 0.6);
+}
+
+/* ── Card 2: Ice Blue / Cyan Glow & Styling (Middle Card in Reference Image 1) ── */
+.fc-blue,
+.fc-cyan {
+  background: linear-gradient(180deg, rgba(14, 20, 32, 0.82) 0%, rgba(6, 16, 28, 0.9) 100%);
+  border-color: rgba(0, 210, 255, 0.32);
+  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.65), 0 10px 30px -10px rgba(0, 210, 255, 0.3);
+}
+
+.fc-blue:hover,
 .fc-blue.is-hovered,
-.fc-blue:hover {
-  box-shadow:
-    0 0 35px rgba(0, 136, 255, 0.8),
-    0 28px 60px rgba(0, 0, 0, 0.95),
-    inset 0 0 20px rgba(0, 136, 255, 0.25);
+.fc-cyan:hover,
+.fc-cyan.is-hovered {
+  border-color: rgba(0, 210, 255, 0.8);
+  box-shadow: 0 24px 50px rgba(0, 0, 0, 0.8), 0 16px 40px -6px rgba(0, 210, 255, 0.65);
 }
 
-/* ── Card 2: Hot Pink / Magenta Neon Border (Matches Middle Card in Photo) ── */
+/* ── Card 3: Emerald Green Glow & Styling (Right Card in Reference Image 1) ── */
+.fc-emerald {
+  background: linear-gradient(180deg, rgba(12, 22, 20, 0.82) 0%, rgba(5, 18, 12, 0.9) 100%);
+  border-color: rgba(16, 185, 129, 0.32);
+  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.65), 0 10px 30px -10px rgba(16, 185, 129, 0.3);
+}
+
+.fc-emerald:hover,
+.fc-emerald.is-hovered {
+  border-color: rgba(16, 185, 129, 0.8);
+  box-shadow: 0 24px 50px rgba(0, 0, 0, 0.8), 0 16px 40px -6px rgba(16, 185, 129, 0.65);
+}
+
+/* Backwards-compatibility aliases */
 .fc-magenta {
   background: linear-gradient(180deg, #180e22 0%, #0a0612 100%);
   border-color: #ec4899;
-  box-shadow:
-    0 0 18px rgba(236, 72, 153, 0.45),
-    0 16px 36px rgba(0, 0, 0, 0.8),
-    inset 0 0 12px rgba(236, 72, 153, 0.12);
 }
-
-.fc-magenta.is-hovered,
-.fc-magenta:hover {
-  box-shadow:
-    0 0 35px rgba(236, 72, 153, 0.8),
-    0 28px 60px rgba(0, 0, 0, 0.95),
-    inset 0 0 20px rgba(236, 72, 153, 0.25);
-}
-
-/* ── Card 3: Radiant Hot Pink-Magenta Border (Matches Right Card in Photo) ── */
-.fc-pink,
-.fc-purple {
+.fc-pink, .fc-purple {
   background: linear-gradient(180deg, #160e28 0%, #090614 100%);
   border-color: #f43f5e;
-  box-shadow:
-    0 0 18px rgba(244, 63, 94, 0.5),
-    0 16px 36px rgba(0, 0, 0, 0.8),
-    inset 0 0 12px rgba(244, 63, 94, 0.12);
-}
-
-.fc-pink.is-hovered,
-.fc-pink:hover,
-.fc-purple.is-hovered,
-.fc-purple:hover {
-  box-shadow:
-    0 0 35px rgba(244, 63, 94, 0.85),
-    0 28px 60px rgba(0, 0, 0, 0.95),
-    inset 0 0 20px rgba(244, 63, 94, 0.25);
 }
 
 .fc.is-pressed,
 .fc:active {
-  transform: translateZ(140px) scale(1.04) !important;
+  transform: translateY(-2px) scale(0.99) !important;
 }
 
 /* ──────────────────────────────────────────────────────────────────────────
@@ -1322,7 +1310,7 @@ button {
 .fc-sheen {
   position: absolute;
   inset: 0;
-  border-radius: 24px;
+  border-radius: 28px;
   pointer-events: none;
   overflow: hidden;
   z-index: 4;
@@ -1367,7 +1355,6 @@ button {
   0% {
     left: -120%;
   }
-
   30%,
   100% {
     left: 220%;
@@ -1375,7 +1362,7 @@ button {
 }
 
 /* ──────────────────────────────────────────────────────────────────────────
-   CARD HEADER: BADGE ON LEFT & ICON ON RIGHT (Matched to Photo Exactly)
+   CARD HEADER: GLASS ICON BOX ON LEFT & CLEAN BADGE ON RIGHT
    ────────────────────────────────────────────────────────────────────────── */
 .fc-top {
   display: flex;
@@ -1385,39 +1372,53 @@ button {
   z-index: 5;
 }
 
+.fc-icon-box {
+  width: 42px;
+  height: 42px;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  backdrop-filter: blur(10px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.35);
+  transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+}
+
+.fc:hover .fc-icon-box {
+  transform: scale(1.08);
+}
+
+.fc-icon-box-amber {
+  color: #ff9d42;
+  background: radial-gradient(circle, rgba(255, 106, 0, 0.22) 0%, rgba(255, 255, 255, 0.06) 100%);
+  border-color: rgba(255, 106, 0, 0.35);
+}
+
+.fc-icon-box-blue,
+.fc-icon-box-cyan {
+  color: #38bdf8;
+  background: radial-gradient(circle, rgba(0, 210, 255, 0.22) 0%, rgba(255, 255, 255, 0.06) 100%);
+  border-color: rgba(0, 210, 255, 0.35);
+}
+
+.fc-icon-box-emerald {
+  color: #34d399;
+  background: radial-gradient(circle, rgba(16, 185, 129, 0.22) 0%, rgba(255, 255, 255, 0.06) 100%);
+  border-color: rgba(16, 185, 129, 0.35);
+}
+
 .fc-badge {
-  font-size: 0.72rem;
+  font-size: 0.68rem;
   font-weight: 800;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  padding: 5px 12px;
+  padding: 4px 10px;
   border-radius: 999px;
-  border-width: 2px;
+  border-width: 1px;
   border-style: solid;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-
-.fc-badge-cyan,
-.fc-badge-blue {
-  background: rgba(0, 100, 255, 0.25);
-  border-color: #0088ff;
-  color: #ffffff;
-  box-shadow: 0 0 10px rgba(0, 136, 255, 0.4);
-}
-
-.fc-badge-magenta {
-  background: rgba(236, 72, 153, 0.25);
-  border-color: #ec4899;
-  color: #ffffff;
-  box-shadow: 0 0 10px rgba(236, 72, 153, 0.4);
-}
-
-.fc-badge-pink,
-.fc-badge-purple {
-  background: rgba(0, 140, 255, 0.25);
-  border-color: #00a8ff;
-  color: #ffffff;
-  box-shadow: 0 0 10px rgba(0, 168, 255, 0.4);
 }
 
 .fc:hover .fc-badge,
@@ -1425,67 +1426,31 @@ button {
   transform: translateY(-1px);
 }
 
-/* Neat Rounded Square Glass Icon Box from Photo */
-.fc-icon-box {
-  width: 36px;
-  height: 36px;
-  border-radius: 11px;
-  background: rgba(255, 255, 255, 0.08);
-  border: 1px solid rgba(255, 255, 255, 0.16);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  backdrop-filter: blur(8px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.35);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+.fc-badge-amber {
+  background: rgba(255, 106, 0, 0.15);
+  border-color: rgba(255, 106, 0, 0.45);
+  color: #ffb074;
 }
 
-.fc:hover .fc-icon-box {
-  transform: scale(1.1);
+.fc-badge-blue,
+.fc-badge-cyan {
+  background: rgba(0, 210, 255, 0.15);
+  border-color: rgba(0, 210, 255, 0.45);
+  color: #7dd3fc;
 }
 
-.fc-icon-brain {
-  background: radial-gradient(circle, rgba(236, 72, 153, 0.35) 0%, rgba(20, 10, 30, 0.85) 80%);
-  border-color: rgba(236, 72, 153, 0.45);
-  box-shadow: 0 0 14px rgba(236, 72, 153, 0.45);
-}
-
-.fc-brain-emoji {
-  font-size: 1.15rem;
-  line-height: 1;
+.fc-badge-emerald {
+  background: rgba(16, 185, 129, 0.15);
+  border-color: rgba(16, 185, 129, 0.45);
+  color: #6ee7b7;
 }
 
 /* ──────────────────────────────────────────────────────────────────────────
-   MINIATURE READING PREVIEW BARS
+   CARD BODY: TITLE & SUBTITLE
    ────────────────────────────────────────────────────────────────────────── */
-.fc-bars {
-  margin: 14px 0 16px 0;
-  display: flex;
-  flex-direction: column;
-  gap: 7px;
-  position: relative;
-  z-index: 5;
-  opacity: 0.95;
-}
-
-.fc-bar {
-  height: 7px;
-  border-radius: 999px;
-  transition: transform 0.3s ease;
-}
-
-.fc:hover .fc-bar,
-.fc.is-hovered .fc-bar {
-  transform: scaleX(1.03);
-}
-
-/* ──────────────────────────────────────────────────────────────────────────
-   CARD BOTTOM DETAILS & GOLDEN CALLOUT (Matched to Photo Exactly)
-   ────────────────────────────────────────────────────────────────────────── */
-.fc-bottom {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
+.fc-body {
+  margin-top: 22px;
+  margin-bottom: auto;
   position: relative;
   z-index: 5;
 }
@@ -1494,9 +1459,9 @@ button {
   color: #ffffff;
   font-weight: 800;
   letter-spacing: -0.02em;
-  line-height: 1.16;
-  font-size: 1.62rem;
-  margin-bottom: 4px;
+  line-height: 1.2;
+  font-size: 1.45rem;
+  margin-bottom: 8px;
   transition: filter 0.3s ease;
 }
 
@@ -1505,33 +1470,63 @@ button {
   filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.6));
 }
 
-.fc small {
-  color: #cbd5e1;
-  font-size: 0.86rem;
+.fc-subtitle {
+  color: #94a3b8;
+  font-size: 0.88rem;
   font-weight: 500;
   font-family: var(--font-inter), sans-serif;
-  line-height: 1.35;
-  display: block;
+  line-height: 1.45;
+  margin: 0;
 }
 
-/* Golden Callout Action Hint (Signature Golden Amber from Photo) */
+/* ──────────────────────────────────────────────────────────────────────────
+   CARD FOOTER: ACTION HINT & ARROW
+   ────────────────────────────────────────────────────────────────────────── */
+.fc-bottom {
+  margin-top: 22px;
+  position: relative;
+  z-index: 5;
+}
+
 .fc-action-hint {
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  font-size: 0.8rem;
+  font-size: 0.82rem;
   font-weight: 800;
-  letter-spacing: 0.06em;
+  letter-spacing: 0.05em;
   text-transform: uppercase;
-  color: #fbbf24;
-  margin-top: 10px;
-  transition: color 0.3s ease, filter 0.3s ease, transform 0.3s ease;
+  transition: transform 0.3s ease, filter 0.3s ease, color 0.3s ease;
 }
 
-.fc:hover .fc-action-hint,
-.fc.is-hovered .fc-action-hint {
-  color: #fde047;
-  filter: drop-shadow(0 0 8px rgba(251, 191, 36, 0.8));
+.fc-action-amber {
+  color: #ff9d42;
+}
+.fc:hover .fc-action-amber,
+.fc.is-hovered .fc-action-amber {
+  color: #ffb875;
+  filter: drop-shadow(0 0 8px rgba(255, 157, 66, 0.8));
+}
+
+.fc-action-blue,
+.fc-action-cyan {
+  color: #38bdf8;
+}
+.fc:hover .fc-action-blue,
+.fc.is-hovered .fc-action-blue,
+.fc:hover .fc-action-cyan,
+.fc.is-hovered .fc-action-cyan {
+  color: #7dd3fc;
+  filter: drop-shadow(0 0 8px rgba(56, 189, 248, 0.8));
+}
+
+.fc-action-emerald {
+  color: #34d399;
+}
+.fc:hover .fc-action-emerald,
+.fc.is-hovered .fc-action-emerald {
+  color: #6ee7b7;
+  filter: drop-shadow(0 0 8px rgba(52, 211, 153, 0.8));
 }
 
 .fc-arrow {
@@ -1542,6 +1537,39 @@ button {
 .fc:hover .fc-arrow,
 .fc.is-hovered .fc-arrow {
   transform: translateX(5px);
+}
+
+/* ──────────────────────────────────────────────────────────────────────────
+   FEATURE PILLS ROW UNDERNEATH CARDS (Signature from Reference Image 1)
+   ────────────────────────────────────────────────────────────────────────── */
+.hero-feature-pills-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 32px;
+  padding-top: 10px;
+  flex-wrap: wrap;
+}
+
+.hero-feature-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: #94a3b8;
+  font-size: 0.84rem;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  transition: color 0.25s ease;
+}
+
+.hero-feature-pill:hover {
+  color: #f1f5f9;
+}
+
+.hero-feature-pill-icon {
+  font-size: 0.95rem;
+  line-height: 1;
+  display: inline-flex;
 }
 
 /* ==========================================================================
@@ -2388,7 +2416,7 @@ label.f {
 /* ==========================================================================
    14. RESPONSIVE BREAKPOINTS & ACCESSIBILITY
    ========================================================================== */
-@media (max-width: 900px) {
+@media (max-width: 1180px) {
   .hero-viewport {
     min-height: auto;
     padding-top: 40px;
@@ -2399,6 +2427,7 @@ label.f {
     grid-template-columns: 1fr;
     gap: 36px;
     text-align: center;
+    max-width: 1040px;
     padding-top: 10px;
   }
 
@@ -2456,34 +2485,20 @@ label.f {
     justify-content: center;
   }
 
-  .stack {
-    height: 350px;
-    margin-top: 10px;
-  }
-
-  .fc-slot {
-    width: 180px;
-    height: 240px;
-  }
-
-  .fc-slot:nth-child(1) {
-    left: 4%;
-    top: 40px;
-  }
-
-  .fc-slot:nth-child(2) {
-    left: 28%;
-    top: 5px;
-  }
-
-  .fc-slot:nth-child(3) {
-    left: 52%;
-    top: 55px;
+  .hero-cards-row {
+    gap: 16px;
   }
 
   .fc {
-    padding: 16px;
+    padding: 20px 16px 18px 16px;
+  }
+
+  .fc-title {
     font-size: 1.3rem;
+  }
+
+  .fc-subtitle {
+    font-size: 0.82rem;
   }
 
   .dash {
@@ -2581,34 +2596,21 @@ label.f {
     grid-template-columns: 1fr;
   }
 
-  .stack {
-    height: 290px;
+  .hero-cards-row {
+    grid-template-columns: 1fr;
+    gap: 18px;
+    max-width: 380px;
+    margin: 0 auto;
   }
 
-  .fc-slot {
-    width: 145px;
-    height: 195px;
-  }
-
-  .fc-slot:nth-child(1) {
-    left: 2%;
-    top: 30px;
-  }
-
-  .fc-slot:nth-child(2) {
-    left: 26%;
-    top: 0px;
-  }
-
-  .fc-slot:nth-child(3) {
-    left: 50%;
-    top: 40px;
+  .hero-feature-pills-row {
+    gap: 16px;
+    justify-content: center;
   }
 
   .fc {
-    padding: 12px;
-    font-size: 1.1rem;
-    border-radius: 16px;
+    padding: 20px 18px;
+    border-radius: 24px;
   }
 
   .fc-icon {
