@@ -860,9 +860,9 @@ button {
   position: relative;
   z-index: 10;
   width: 100%;
-  max-width: 1380px;
+  max-width: 1220px;
   display: grid;
-  grid-template-columns: minmax(360px, 440px) 1fr;
+  grid-template-columns: 1.05fr 0.95fr;
   gap: 40px;
   align-items: center;
   padding-top: 24px;
@@ -1085,8 +1085,8 @@ button {
    ========================================================================== */
 .stack {
   perspective: 1200px;
-  width: 100%;
-  max-width: 720px;
+  width: 500px;
+  max-width: 100%;
   height: 440px;
   position: relative;
   display: flex;
@@ -1137,10 +1137,10 @@ button {
   }
 }
 
-/* Card Slot (Spaced out so all 3 cards are clearly visible) */
+/* Card Slot (Slightly overlapping 3D deck matching Reference Image 2) */
 .fc-slot {
   position: absolute;
-  width: 226px;
+  width: 228px;
   height: 310px;
   transform-style: preserve-3d;
   animation: floatCardSlot 6s ease-in-out infinite;
@@ -1156,14 +1156,14 @@ button {
 }
 
 .fc-slot:nth-child(2) {
-  left: 35%;
+  left: 26%;
   top: 15px;
   animation-delay: -2s;
   z-index: 2;
 }
 
 .fc-slot:nth-child(3) {
-  left: 70%;
+  left: 52%;
   top: 65px;
   animation-delay: -4s;
   z-index: 3;
@@ -2462,7 +2462,8 @@ label.f {
   }
 
   .stack {
-    max-width: 660px;
+    width: 440px;
+    max-width: 100%;
     height: 380px;
     margin-top: 10px;
   }
@@ -2474,17 +2475,17 @@ label.f {
 
   .fc-slot:nth-child(1) {
     left: 0%;
-    top: 40px;
+    top: 45px;
   }
 
   .fc-slot:nth-child(2) {
-    left: 35%;
+    left: 26%;
     top: 10px;
   }
 
   .fc-slot:nth-child(3) {
-    left: 70%;
-    top: 50px;
+    left: 52%;
+    top: 55px;
   }
 
   .fc {
@@ -2588,8 +2589,9 @@ label.f {
   }
 
   .stack {
-    max-width: 440px;
-    height: 330px;
+    width: 320px;
+    max-width: 100%;
+    height: 300px;
   }
 
   .fc-slot {
@@ -2599,17 +2601,17 @@ label.f {
 
   .fc-slot:nth-child(1) {
     left: 0%;
-    top: 30px;
+    top: 35px;
   }
 
   .fc-slot:nth-child(2) {
-    left: 32%;
-    top: 0px;
+    left: 26%;
+    top: 5px;
   }
 
   .fc-slot:nth-child(3) {
-    left: 64%;
-    top: 40px;
+    left: 52%;
+    top: 45px;
   }
 
   .fc {
