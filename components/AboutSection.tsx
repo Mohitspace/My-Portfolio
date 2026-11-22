@@ -1,10 +1,10 @@
 'use client'
 
-import React, { useState, useEffect, useRef } from 'react'
+import React, { useState } from 'react'
 
 /* ==========================================================================
    ABOUT ME SECTION CONFIGURATION
-   👉 You can easily customize your photo, copy, stats & social links below!
+   👉 You can easily customize your photo, copy & social links below!
    ========================================================================== */
 export const ABOUT_CONFIG = {
   // 1. Creator Profile Information
@@ -23,16 +23,7 @@ export const ABOUT_CONFIG = {
   creatorRole: 'Creator & Mindset Mentor',
   creatorPill: 'Self-Improvement · YouTube',
 
-  // 3. Stats Row (Scroll Count-Up Animation)
-  // EDITABLE PLACEHOLDERS: Replace these with your actual metrics!
-  stats: [
-    { label: 'Subscribers', value: 120, suffix: 'K+' },
-    { label: 'Videos Published', value: 180, suffix: '+' },
-    { label: 'Channel Views', value: 8, suffix: 'M+' },
-    { label: 'Mindset Focus', value: 100, suffix: '%' },
-  ],
-
-  // 4. "What I Believe In" / Mission Pillars (3 Glass Cards)
+  // 3. "What I Believe In" / Mission Pillars (3 Glass Cards)
   pillars: [
     {
       icon: '🌱',
@@ -60,7 +51,7 @@ export const ABOUT_CONFIG = {
     },
   ],
 
-  // 5. Social Links & Main CTA
+  // 4. Social Links & Main CTA
   // Replace these URLs with your actual profile links
   youtubeUrl: 'https://youtube.com/@themohitfact',
   instagramUrl: 'https://instagram.com/themohitfact',
@@ -79,54 +70,6 @@ export default function AboutSection({
 
   // Profile Image state with fallback
   const [imgSrc, setImgSrc] = useState(ABOUT_CONFIG.photoUrl)
-
-  // Animated Stats Count-up state
-  const [hasAnimated, setHasAnimated] = useState(false)
-  const [counts, setCounts] = useState<number[]>(
-    ABOUT_CONFIG.stats.map(() => 0)
-  )
-  const statsRef = useRef<HTMLDivElement | null>(null)
-
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        const [entry] = entries
-        if (entry.isIntersecting && !hasAnimated) {
-          setHasAnimated(true)
-
-          const duration = 1600 // ms
-          const startTime = performance.now()
-
-          const animate = (currentTime: number) => {
-            const elapsed = currentTime - startTime
-            const progress = Math.min(elapsed / duration, 1)
-
-            // Ease out cubic: 1 - pow(1 - x, 3)
-            const ease = 1 - Math.pow(1 - progress, 3)
-
-            setCounts(
-              ABOUT_CONFIG.stats.map((stat) => Math.floor(stat.value * ease))
-            )
-
-            if (progress < 1) {
-              requestAnimationFrame(animate)
-            } else {
-              setCounts(ABOUT_CONFIG.stats.map((stat) => stat.value))
-            }
-          }
-
-          requestAnimationFrame(animate)
-        }
-      },
-      { threshold: 0.25 }
-    )
-
-    if (statsRef.current) {
-      observer.observe(statsRef.current)
-    }
-
-    return () => observer.disconnect()
-  }, [hasAnimated])
 
   return (
     <section id="about" className="wrap sec about-sec" aria-label="About The Creator">
@@ -258,23 +201,7 @@ export default function AboutSection({
         </div>
 
         {/* ==================================================================
-            2. STATS ROW (Glass Cards with Animated Count-Up)
-           ================================================================== */}
-        <div ref={statsRef} className="about-stats-grid">
-          {ABOUT_CONFIG.stats.map((stat, idx) => (
-            <div key={idx} className="about-stat-card">
-              <div className="about-stat-glow" />
-              <div className="about-stat-number">
-                <span>{counts[idx]}</span>
-                <span className="about-stat-suffix">{stat.suffix}</span>
-              </div>
-              <div className="about-stat-label">{stat.label}</div>
-            </div>
-          ))}
-        </div>
-
-        {/* ==================================================================
-            3. "WHAT I BELIEVE IN" MISSION PILLARS (3 Glass Cards)
+            2. "WHAT I BELIEVE IN" MISSION PILLARS (3 Glass Cards)
            ================================================================== */}
         <div className="about-mission-section">
           <div className="about-mission-header">
