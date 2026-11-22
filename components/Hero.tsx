@@ -2,53 +2,98 @@
 
 import React, { useState, useRef } from 'react'
 import Link from 'next/link'
-import HeroCinematicBackground from './HeroCinematicBackground'
 
 interface CardItem {
   id: string
-  theme: 'amber' | 'blue' | 'emerald'
+  theme: 'cyan' | 'magenta' | 'pink'
   href: string
   badgeText: string
-  iconType: 'document' | 'tools' | 'insight'
+  iconType: 'none' | 'layers' | 'brain'
   title: string
+  title1: string
+  title2?: string
   subtitle: string
   actionText: string
-  floatDelay: string
+  bars: Array<{ width: string; gradient: string }>
+  baseAngle: number
+  baseZ: number
+  slotStyle: React.CSSProperties
 }
 
 const CARDS_DATA: CardItem[] = [
   {
     id: 'pdf-guide',
-    theme: 'amber',
+    theme: 'cyan',
     href: '/books?fmt=PDF',
     badgeText: 'PDF GUIDE',
-    iconType: 'document',
+    iconType: 'none',
     title: 'Workbook Guides',
-    subtitle: 'Actionable step-by-step master guides to accelerate your growth.',
+    title1: 'Workbook',
+    title2: 'Guides',
+    subtitle: 'Actionable step master guides',
     actionText: 'EXPLORE PDF GUIDE',
-    floatDelay: '0s',
+    bars: [
+      { width: '85%', gradient: 'linear-gradient(90deg, #ec4899, #d946ef, transparent)' },
+      { width: '65%', gradient: 'linear-gradient(90deg, #ec4899, #a855f7, transparent)' },
+      { width: '75%', gradient: 'linear-gradient(90deg, #a855f7, #00d2ff, transparent)' },
+    ],
+    baseAngle: -8,
+    baseZ: 20,
+    slotStyle: {
+      left: '-2%',
+      top: '55px',
+      animationDelay: '0s',
+      zIndex: 1,
+    },
   },
   {
     id: 'epub-book',
-    theme: 'blue',
+    theme: 'magenta',
     href: '/books?fmt=EPUB',
     badgeText: 'EPUB BOOK',
-    iconType: 'tools',
+    iconType: 'layers',
     title: 'Digital Books',
-    subtitle: 'Curated digital books to read anywhere on phone & laptop.',
+    title1: 'Digital Books',
+    subtitle: 'Read anywhere on phone & laptop',
     actionText: 'EXPLORE EPUB',
-    floatDelay: '-2s',
+    bars: [
+      { width: '90%', gradient: 'linear-gradient(90deg, #ec4899, #f472b6, transparent)' },
+      { width: '55%', gradient: 'linear-gradient(90deg, #ec4899, #d946ef, transparent)' },
+      { width: '70%', gradient: 'linear-gradient(90deg, #a855f7, #38bdf8, transparent)' },
+    ],
+    baseAngle: 1,
+    baseZ: 70,
+    slotStyle: {
+      left: '26%',
+      top: '15px',
+      animationDelay: '-2s',
+      zIndex: 2,
+    },
   },
   {
     id: 'study-notes',
-    theme: 'emerald',
+    theme: 'pink',
     href: '/#explore',
     badgeText: 'STUDY NOTES',
-    iconType: 'insight',
+    iconType: 'brain',
     title: 'Mastery Notes',
-    subtitle: 'Distilled psychological frameworks & life mastery blueprints.',
+    title1: 'Mastery',
+    title2: 'Notes',
+    subtitle: 'Distilled psychological & life frameworks',
     actionText: 'EXPLORE STUDY NOTES',
-    floatDelay: '-4s',
+    bars: [
+      { width: '85%', gradient: 'linear-gradient(90deg, #00d2ff, #38bdf8, transparent)' },
+      { width: '60%', gradient: 'linear-gradient(90deg, #00d2ff, #0ea5e9, transparent)' },
+      { width: '75%', gradient: 'linear-gradient(90deg, #00d2ff, transparent)' },
+    ],
+    baseAngle: 8,
+    baseZ: 120,
+    slotStyle: {
+      left: '54%',
+      top: '65px',
+      animationDelay: '-4s',
+      zIndex: 3,
+    },
   },
 ]
 
@@ -63,9 +108,9 @@ function HeroResourceCard({ card }: { card: CardItem }) {
     const rect = cardRef.current.getBoundingClientRect()
     const x = (e.clientX - rect.left) / rect.width
     const y = (e.clientY - rect.top) / rect.height
-    // Gentle 3D tilt tracking cursor
-    const rx = -(y - 0.5) * 14
-    const ry = (x - 0.5) * 14
+    // Subtle 3D tilt between -8deg and +8deg
+    const rx = -(y - 0.5) * 16
+    const ry = (x - 0.5) * 16
     setTilt({
       rx: Math.round(rx * 10) / 10,
       ry: Math.round(ry * 10) / 10,
@@ -74,34 +119,38 @@ function HeroResourceCard({ card }: { card: CardItem }) {
     })
   }
 
-  const handleMouseEnter = () => setIsHovered(true)
+  const handleMouseEnter = () => {
+    setIsHovered(true)
+  }
+
   const handleMouseLeave = () => {
     setIsHovered(false)
     setIsPressed(false)
     setTilt({ rx: 0, ry: 0, px: 50, py: 50 })
   }
 
+  // Exact same hover zoom scale(1.08) and identical transition dynamics for all 3 cards
   const transformStyle: React.CSSProperties = isHovered
     ? {
-        transform: `translateY(-10px) scale(1.04) rotateX(${tilt.rx}deg) rotateY(${tilt.ry}deg)`,
+        transform: `translateZ(180px) rotateZ(0deg) scale(1.08) rotateX(${tilt.rx}deg) rotateY(${tilt.ry}deg)`,
       }
     : isPressed
     ? {
-        transform: `translateY(-3px) scale(0.99)`,
+        transform: `translateZ(140px) rotateZ(0deg) scale(1.04)`,
       }
     : {
-        transform: `translateY(0px) scale(1) rotateX(0deg) rotateY(0deg)`,
+        transform: `translateZ(${card.baseZ}px) rotateZ(${card.baseAngle}deg) scale(1) rotateX(0deg) rotateY(0deg)`,
       }
 
   return (
     <div
       className={`fc-slot fc-slot-${card.theme} ${isHovered ? 'is-hovered' : ''} ${isPressed ? 'is-pressed' : ''}`}
-      style={{ animationDelay: card.floatDelay }}
+      style={card.slotStyle}
     >
-      {/* Soft Ambient Volumetric Bottom Glow Aura */}
+      {/* Soft Ambient Volumetric Glow Behind Each Card */}
       <div className={`fc-ambient-glow fc-ambient-glow-${card.theme}`} />
 
-      {/* Clickable Card with Glass Body and 3D Interaction */}
+      {/* Clickable Card with 3D Hover Zoom and Tilt */}
       <Link
         ref={cardRef}
         href={card.href}
@@ -126,68 +175,55 @@ function HeroResourceCard({ card }: { card: CardItem }) {
           <div className="fc-sheen-sweep" />
         </div>
 
-        {/* Luminous Bottom Caustic Glow (Signature feature from Reference Image 1) */}
-        <div className={`fc-glow-bottom fc-glow-bottom-${card.theme}`} />
-
-        {/* Card Header: Glass Icon Box on Left, Clean Category Badge on Right */}
+        {/* Card Header: Badge on left, Icon on right (Matches Photo Exactly) */}
         <div className="fc-top">
-          <div className={`fc-icon-box fc-icon-box-${card.theme}`}>
-            {card.iconType === 'document' && (
-              <svg
-                width="20"
-                height="20"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              >
-                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
-                <polyline points="14 2 14 8 20 8" />
-                <line x1="16" y1="13" x2="8" y2="13" />
-                <line x1="16" y1="17" x2="8" y2="17" />
-              </svg>
-            )}
-            {card.iconType === 'tools' && (
-              <svg
-                width="20"
-                height="20"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              >
-                <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z" />
-              </svg>
-            )}
-            {card.iconType === 'insight' && (
-              <svg
-                width="20"
-                height="20"
-                viewBox="0 0 24 24"
-                fill="currentColor"
-              >
-                <path d="M12 2a4 4 0 0 0-4 4 4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4 4 4 0 0 0-4-4zm0 2a2 2 0 0 1 2 2 2 2 0 0 1 2 2 2 2 0 0 1-2 2 2 2 0 0 1-2-2 2 2 0 0 1 0-4zm-4 4a2 2 0 0 1 2 2 2 2 0 0 1-2 2 2 2 0 0 1-2-2 2 2 0 0 1 2-2zm8 0a2 2 0 0 1 2 2 2 2 0 0 1-2 2 2 2 0 0 1-2-2 2 2 0 0 1 2-2zm-4 4a2 2 0 0 1 2 2 2 2 0 0 1-2 2 2 2 0 0 1-2-2 2 2 0 0 1 2-2z" />
-              </svg>
-            )}
-          </div>
           <span className={`fc-badge fc-badge-${card.theme}`}>
             {card.badgeText}
           </span>
+          {card.iconType === 'layers' && (
+            <div className="fc-icon-box fc-icon-layers">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+                <rect x="2" y="2" width="13" height="13" rx="3.5" fill="#00d2ff" fillOpacity="0.8" />
+                <rect x="8" y="4" width="13" height="13" rx="3.5" fill="#10b981" fillOpacity="0.85" />
+                <rect x="5" y="8" width="14" height="14" rx="3.5" fill="#ec4899" fillOpacity="0.95" />
+              </svg>
+            </div>
+          )}
+          {card.iconType === 'brain' && (
+            <div className="fc-icon-box fc-icon-brain">
+              <span className="fc-brain-emoji">🧠</span>
+            </div>
+          )}
+          {card.iconType === 'none' && <div style={{ width: 36, height: 36 }} />}
         </div>
 
-        {/* Card Body: Bold Title & Subtitle */}
-        <div className="fc-body">
-          <h3 className="fc-title">{card.title}</h3>
-          <p className="fc-subtitle">{card.subtitle}</p>
+        {/* Card Miniature Animated Preview Bars */}
+        <div className="fc-bars">
+          {card.bars.map((bar, i) => (
+            <div
+              key={i}
+              className={`fc-bar fc-bar-${card.theme}`}
+              style={{
+                width: bar.width,
+                background: bar.gradient,
+              }}
+            />
+          ))}
         </div>
 
-        {/* Card Footer: Action Hint & Arrow */}
+        {/* Card Bottom Details & Golden Callout */}
         <div className="fc-bottom">
-          <div className={`fc-action-hint fc-action-${card.theme}`}>
+          <span className="fc-title">
+            {card.title1}
+            {card.title2 && (
+              <>
+                <br />
+                {card.title2}
+              </>
+            )}
+          </span>
+          <small>{card.subtitle}</small>
+          <div className="fc-action-hint">
             <span>{card.actionText}</span>
             <span className="fc-arrow">→</span>
           </div>
@@ -197,13 +233,15 @@ function HeroResourceCard({ card }: { card: CardItem }) {
   )
 }
 
+import HeroCinematicBackground from './HeroCinematicBackground'
+
 export default function Hero({ count }: { count: number }) {
   return (
     <section className="hero-viewport" aria-label="Welcome and Featured Resources">
       {/* 1. Cinematic Animated Space, Earth & Mountain Environment */}
       <HeroCinematicBackground />
 
-      {/* 2. Main Content Grid (Left: Welcome text & buttons, Right: 3 Animated Cards Side-by-Side) */}
+      {/* 2. Main Content Grid (Left: Welcome text & buttons, Right: 3 Animated Cards) */}
       <div className="wrap hero-content-grid">
         {/* Left Column */}
         <div className="hero-left-col">
@@ -250,30 +288,14 @@ export default function Hero({ count }: { count: number }) {
           </div>
         </div>
 
-        {/* Right Column: 3 Preserved 3D Animated Resource Cards Spaced Apart ("Door Door") */}
+        {/* Right Column: 3 Preserved 3D Animated Resource Cards */}
         <div className="hero-right-col" aria-label="Featured resource categories">
-          <div className="hero-cards-container">
-            {/* 3 Cards Side-by-Side Row with Generous Gaps */}
-            <div className="hero-cards-row">
+          <div className="stack" aria-label="Featured digital resource categories">
+            <div className="stack-glow-backdrop" />
+            <div className="tilt">
               {CARDS_DATA.map((card) => (
                 <HeroResourceCard key={card.id} card={card} />
               ))}
-            </div>
-
-            {/* Bottom Feature Pills Row Underneath the 3 Cards (From Image 1) */}
-            <div className="hero-feature-pills-row" aria-label="Key features">
-              <div className="hero-feature-pill">
-                <span className="hero-feature-pill-icon">⚡</span>
-                <span className="hero-feature-pill-text">Always Current</span>
-              </div>
-              <div className="hero-feature-pill">
-                <span className="hero-feature-pill-icon">👤</span>
-                <span className="hero-feature-pill-text">Focused for You</span>
-              </div>
-              <div className="hero-feature-pill">
-                <span className="hero-feature-pill-icon">✦</span>
-                <span className="hero-feature-pill-text">Actionable Steps</span>
-              </div>
             </div>
           </div>
         </div>
