@@ -9,16 +9,10 @@ export async function middleware(request: NextRequest) {
   })
 
   try {
-    const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
-    const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
-
-    // If Supabase credentials are missing, guard dashboard routes and continue
-    if (!supabaseUrl || !supabaseAnonKey) {
-      if (request.nextUrl.pathname.startsWith('/dashboard')) {
-        return NextResponse.redirect(new URL('/', request.url))
-      }
-      return response
-    }
+    const supabaseUrl =
+      process.env.NEXT_PUBLIC_SUPABASE_URL || 'https://bwinhlaobgacnmoxraus.supabase.co'
+    const supabaseAnonKey =
+      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || 'sb_publishable_d78FsEQirjTNChHeCZ_ZCg_jt3R1eFF'
 
     const supabase = createServerClient(supabaseUrl, supabaseAnonKey, {
       cookies: {

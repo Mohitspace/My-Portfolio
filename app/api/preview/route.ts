@@ -24,10 +24,13 @@ export async function GET(req: NextRequest) {
       return NextResponse.json({ error: 'login_required' }, { status: 401 })
     }
 
-    const serviceKey = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
-    if (!serviceKey) return NextResponse.json({ error: 'configuration_missing' }, { status: 500 })
+    const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || 'https://bwinhlaobgacnmoxraus.supabase.co'
+    const serviceKey =
+      process.env.SUPABASE_SERVICE_ROLE_KEY ||
+      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY ||
+      'sb_publishable_d78FsEQirjTNChHeCZ_ZCg_jt3R1eFF'
 
-    const svc = admin(process.env.NEXT_PUBLIC_SUPABASE_URL!, serviceKey)
+    const svc = admin(supabaseUrl, serviceKey)
     // 3600 seconds (1 hour) for uninterrupted reading session
     const { data: signedData, error: signError } = await svc.storage
       .from('resources')
