@@ -1391,14 +1391,15 @@ button {
 }
 
 .fc-badge {
-  font-size: 0.72rem;
+  font-size: 0.7rem;
   font-weight: 800;
-  letter-spacing: 0.08em;
+  letter-spacing: 0.06em;
   text-transform: uppercase;
-  padding: 5px 12px;
+  padding: 4px 10px;
   border-radius: 999px;
   border-width: 2px;
   border-style: solid;
+  white-space: nowrap;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
@@ -1419,15 +1420,26 @@ button {
 
 .fc-badge-pink,
 .fc-badge-purple {
-  background: rgba(0, 140, 255, 0.25);
-  border-color: #00a8ff;
+  background: rgba(0, 140, 255, 0.22);
+  border-color: #00b4d8;
   color: #ffffff;
-  box-shadow: 0 0 10px rgba(0, 168, 255, 0.4);
+  box-shadow:
+    0 0 14px rgba(0, 180, 255, 0.55),
+    inset 0 0 6px rgba(0, 212, 255, 0.3);
+  text-shadow: 0 0 6px rgba(56, 189, 248, 0.6);
 }
 
 .fc:hover .fc-badge,
 .fc.is-hovered .fc-badge {
   transform: translateY(-1px);
+}
+
+.fc:hover .fc-badge-pink,
+.fc.is-hovered .fc-badge-pink {
+  box-shadow:
+    0 0 18px rgba(0, 200, 255, 0.8),
+    inset 0 0 8px rgba(0, 220, 255, 0.45);
+  text-shadow: 0 0 8px rgba(56, 189, 248, 0.9);
 }
 
 /* Neat Rounded Square Glass Icon Box from Photo */
@@ -2620,7 +2632,8 @@ label.f {
     border-radius: 16px;
   }
 
-  .fc-icon {
+  .fc-icon,
+  .fc-icon-box {
     width: 28px;
     height: 28px;
     border-radius: 8px;
@@ -2628,8 +2641,10 @@ label.f {
   }
 
   .fc-badge {
-    font-size: 0.6rem;
-    padding: 2px 7px;
+    font-size: 0.56rem;
+    padding: 2px 6px;
+    letter-spacing: 0.04em;
+    white-space: nowrap;
   }
 
   .fc small {
