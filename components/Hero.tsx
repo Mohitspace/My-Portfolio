@@ -5,10 +5,10 @@ import Link from 'next/link'
 
 interface CardItem {
   id: string
-  theme: 'amber' | 'blue' | 'emerald'
+  theme: 'blue' | 'magenta' | 'purple'
   href: string
   badgeText: string
-  icon: string
+  icon?: string
   title: string
   subtitle: string
   actionText: string
@@ -21,10 +21,10 @@ interface CardItem {
 const CARDS_DATA: CardItem[] = [
   {
     id: 'pdf-guide',
-    theme: 'amber',
+    theme: 'blue',
     href: '/books?fmt=PDF',
     badgeText: 'PDF GUIDE',
-    icon: '📄',
+    icon: '',
     title: 'Workbook Guides',
     subtitle: 'Actionable step master guides',
     actionText: 'EXPLORE PDF GUIDE',
@@ -44,7 +44,7 @@ const CARDS_DATA: CardItem[] = [
   },
   {
     id: 'epub-book',
-    theme: 'blue',
+    theme: 'magenta',
     href: '/books?fmt=EPUB',
     badgeText: 'EPUB BOOK',
     icon: '📚',
@@ -52,8 +52,8 @@ const CARDS_DATA: CardItem[] = [
     subtitle: 'Read anywhere on your phone & laptop',
     actionText: 'EXPLORE EPUB',
     bars: [
-      { width: '90%', gradient: 'linear-gradient(90deg, #38bdf8, #60a5fa, transparent)' },
-      { width: '55%', gradient: 'linear-gradient(90deg, #0ea5e9, transparent)' },
+      { width: '90%', gradient: 'linear-gradient(90deg, #f43f5e, #c084fc, transparent)' },
+      { width: '55%', gradient: 'linear-gradient(90deg, #ec4899, transparent)' },
       { width: '70%', gradient: 'linear-gradient(90deg, #38bdf8, #c084fc, transparent)' },
     ],
     baseAngle: 1,
@@ -67,7 +67,7 @@ const CARDS_DATA: CardItem[] = [
   },
   {
     id: 'study-notes',
-    theme: 'emerald',
+    theme: 'purple',
     href: '/#explore',
     badgeText: 'STUDY NOTES',
     icon: '🧠',
@@ -76,7 +76,7 @@ const CARDS_DATA: CardItem[] = [
     actionText: 'EXPLORE STUDY NOTES',
     bars: [
       { width: '80%', gradient: 'linear-gradient(90deg, #38bdf8, #0ea5e9, transparent)' },
-      { width: '95%', gradient: 'linear-gradient(90deg, #10b981, #38bdf8, transparent)' },
+      { width: '95%', gradient: 'linear-gradient(90deg, #38bdf8, #818cf8, transparent)' },
       { width: '60%', gradient: 'linear-gradient(90deg, #38bdf8, transparent)' },
     ],
     baseAngle: 8,
@@ -162,22 +162,22 @@ function HeroResourceCard({ card }: { card: CardItem }) {
         onTouchEnd={() => setIsPressed(false)}
         aria-label={`${card.badgeText}: ${card.title} - ${card.subtitle}. Click to explore.`}
       >
-        {/* Dynamic Internal Luminous Neon Blooms (Signature effect from 2nd photo) */}
-        <div className={`fc-glow-top fc-glow-top-${card.theme}`} />
-        <div className={`fc-glow-bottom fc-glow-bottom-${card.theme}`} />
-
         {/* Subtle moving light reflection / sheen */}
         <div className="fc-sheen">
           <div className="fc-sheen-glare" />
           <div className="fc-sheen-sweep" />
         </div>
 
-        {/* Card Header: Icon box + Badge */}
+        {/* Card Header: Badge on left, Icon on right (Matches Photo 1) */}
         <div className="fc-top">
-          <div className={`fc-icon fc-icon-${card.theme}`}>{card.icon}</div>
           <span className={`fc-badge fc-badge-${card.theme}`}>
             {card.badgeText}
           </span>
+          {card.icon ? (
+            <div className={`fc-icon fc-icon-${card.theme}`}>{card.icon}</div>
+          ) : (
+            <div style={{ width: 34, height: 34 }} />
+          )}
         </div>
 
         {/* Card Miniature Animated Preview Bars */}
@@ -194,11 +194,11 @@ function HeroResourceCard({ card }: { card: CardItem }) {
           ))}
         </div>
 
-        {/* Card Bottom Details & Click Callout */}
+        {/* Card Bottom Details & Golden Callout */}
         <div className="fc-bottom">
-          <span className={`fc-title fc-title-${card.theme}`}>{card.title}</span>
+          <span className="fc-title">{card.title}</span>
           <small>{card.subtitle}</small>
-          <div className={`fc-action-hint fc-action-${card.theme}`}>
+          <div className="fc-action-hint">
             <span>{card.actionText}</span>
             <span className="fc-arrow">→</span>
           </div>
