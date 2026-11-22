@@ -89,6 +89,7 @@ export default function Bookshelf({
   // Extract all categories & formats
   const categories = useMemo(() => {
     const cats = [...new Set(books.map((b) => b.category).filter(Boolean))]
+      .filter((cat) => cat !== 'Study Materials' && cat !== 'Notes')
     return [ALL, ...cats]
   }, [books])
 

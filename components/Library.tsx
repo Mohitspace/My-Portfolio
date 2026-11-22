@@ -48,7 +48,7 @@ export default function Library({
     const catParam = params.get('cat')
     if (fmtParam) {
       setF((prev) => ({ ...prev, fmt: fmtParam }))
-    } else if (catParam) {
+    } else if (catParam && CATEGORIES.includes(catParam)) {
       setF((prev) => ({ ...prev, cat: catParam }))
     }
   }, [])
