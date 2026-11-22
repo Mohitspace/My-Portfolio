@@ -233,6 +233,7 @@ export default function WelcomeIntro() {
   }
 
   const welcomeText = "WELCOME TO MOHIT'S WORLD"
+  const welcomeWords = ["WELCOME", "TO", "MOHIT'S", "WORLD"]
   const isWarping = phase === 'warp'
 
   return (
@@ -343,15 +344,24 @@ export default function WelcomeIntro() {
           </div>
 
           <h1 className="m3d-title" aria-label={welcomeText}>
-            {welcomeText.split('').map((char, i) => (
-              <span
-                key={i}
-                className="m3d-char"
-                style={{ animationDelay: `${0.1 + i * 0.032}s` }}
-              >
-                {char === ' ' ? '\u00A0' : char}
-              </span>
-            ))}
+            {welcomeWords.map((word, wordIdx) => {
+              const prevCharCount = welcomeWords
+                .slice(0, wordIdx)
+                .reduce((sum, w) => sum + w.length + 1, 0)
+              return (
+                <span key={wordIdx} className="m3d-word">
+                  {word.split('').map((char, charIdx) => (
+                    <span
+                      key={charIdx}
+                      className="m3d-char"
+                      style={{ animationDelay: `${0.1 + (prevCharCount + charIdx) * 0.032}s` }}
+                    >
+                      {char}
+                    </span>
+                  ))}
+                </span>
+              )
+            })}
           </h1>
 
           <p className="m3d-tagline">

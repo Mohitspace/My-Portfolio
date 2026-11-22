@@ -3098,7 +3098,8 @@ label.f {
    ────────────────────────────────────────────────────────────────────────── */
 .m3d-typography {
   position: relative;
-  max-width: 880px;
+  width: 100%;
+  max-width: 1280px;
   padding: 0 20px;
   display: flex;
   flex-direction: column;
@@ -3134,18 +3135,28 @@ label.f {
   color: #fbbf24;
 }
 
-/* "WELCOME TO MOHIT'S WORLD" 3D Chrome Metallic Title */
+/* "WELCOME TO MOHIT'S WORLD" 3D Chrome Metallic Title (Single Line) */
 .m3d-title {
   font-family: var(--font-grotesk), sans-serif;
-  font-size: clamp(2.2rem, 5.2vw, 4.4rem);
+  font-size: clamp(1.4rem, 4.3vw, 3.8rem);
   font-weight: 800;
-  letter-spacing: -0.02em;
-  line-height: 1.08;
+  letter-spacing: -0.01em;
+  line-height: 1.1;
   margin: 0 0 14px 0;
   display: flex;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
   justify-content: center;
+  align-items: center;
+  gap: 0.35em;
+  white-space: nowrap;
   transform-style: preserve-3d;
+  width: 100%;
+}
+
+.m3d-word {
+  display: inline-flex;
+  white-space: nowrap;
+  flex-shrink: 0;
 }
 
 .m3d-char {
@@ -3331,7 +3342,9 @@ body:has(.m3d-overlay) {
   }
 
   .m3d-title {
-    font-size: clamp(1.8rem, 6.5vw, 2.8rem);
+    font-size: clamp(1.1rem, 4.4vw, 2.2rem);
+    white-space: nowrap;
+    gap: 0.28em;
   }
 
   .m3d-tagline {
