@@ -5,11 +5,13 @@ import Link from 'next/link'
 
 interface CardItem {
   id: string
-  theme: 'blue' | 'magenta' | 'purple'
+  theme: 'cyan' | 'magenta' | 'pink'
   href: string
   badgeText: string
-  icon?: string
+  iconType: 'none' | 'layers' | 'brain'
   title: string
+  title1: string
+  title2?: string
   subtitle: string
   actionText: string
   bars: Array<{ width: string; gradient: string }>
@@ -21,22 +23,24 @@ interface CardItem {
 const CARDS_DATA: CardItem[] = [
   {
     id: 'pdf-guide',
-    theme: 'blue',
+    theme: 'cyan',
     href: '/books?fmt=PDF',
     badgeText: 'PDF GUIDE',
-    icon: '',
+    iconType: 'none',
     title: 'Workbook Guides',
+    title1: 'Workbook',
+    title2: 'Guides',
     subtitle: 'Actionable step master guides',
     actionText: 'EXPLORE PDF GUIDE',
     bars: [
-      { width: '85%', gradient: 'linear-gradient(90deg, #f43f5e, #c084fc, transparent)' },
-      { width: '65%', gradient: 'linear-gradient(90deg, #ec4899, transparent)' },
-      { width: '75%', gradient: 'linear-gradient(90deg, #a855f7, #38bdf8, transparent)' },
+      { width: '85%', gradient: 'linear-gradient(90deg, #ec4899, #d946ef, transparent)' },
+      { width: '65%', gradient: 'linear-gradient(90deg, #ec4899, #a855f7, transparent)' },
+      { width: '75%', gradient: 'linear-gradient(90deg, #a855f7, #00d2ff, transparent)' },
     ],
-    baseAngle: -7,
+    baseAngle: -8,
     baseZ: 20,
     slotStyle: {
-      left: '0%',
+      left: '-2%',
       top: '55px',
       animationDelay: '0s',
       zIndex: 1,
@@ -47,14 +51,15 @@ const CARDS_DATA: CardItem[] = [
     theme: 'magenta',
     href: '/books?fmt=EPUB',
     badgeText: 'EPUB BOOK',
-    icon: '📚',
+    iconType: 'layers',
     title: 'Digital Books',
-    subtitle: 'Read anywhere on your phone & laptop',
+    title1: 'Digital Books',
+    subtitle: 'Read anywhere on phone & laptop',
     actionText: 'EXPLORE EPUB',
     bars: [
-      { width: '90%', gradient: 'linear-gradient(90deg, #f43f5e, #c084fc, transparent)' },
-      { width: '55%', gradient: 'linear-gradient(90deg, #ec4899, transparent)' },
-      { width: '70%', gradient: 'linear-gradient(90deg, #38bdf8, #c084fc, transparent)' },
+      { width: '90%', gradient: 'linear-gradient(90deg, #ec4899, #f472b6, transparent)' },
+      { width: '55%', gradient: 'linear-gradient(90deg, #ec4899, #d946ef, transparent)' },
+      { width: '70%', gradient: 'linear-gradient(90deg, #a855f7, #38bdf8, transparent)' },
     ],
     baseAngle: 1,
     baseZ: 70,
@@ -67,22 +72,24 @@ const CARDS_DATA: CardItem[] = [
   },
   {
     id: 'study-notes',
-    theme: 'purple',
+    theme: 'pink',
     href: '/#explore',
     badgeText: 'STUDY NOTES',
-    icon: '🧠',
+    iconType: 'brain',
     title: 'Mastery Notes',
+    title1: 'Mastery',
+    title2: 'Notes',
     subtitle: 'Distilled psychological & life frameworks',
     actionText: 'EXPLORE STUDY NOTES',
     bars: [
-      { width: '80%', gradient: 'linear-gradient(90deg, #38bdf8, #0ea5e9, transparent)' },
-      { width: '95%', gradient: 'linear-gradient(90deg, #38bdf8, #818cf8, transparent)' },
-      { width: '60%', gradient: 'linear-gradient(90deg, #38bdf8, transparent)' },
+      { width: '85%', gradient: 'linear-gradient(90deg, #00d2ff, #38bdf8, transparent)' },
+      { width: '60%', gradient: 'linear-gradient(90deg, #00d2ff, #0ea5e9, transparent)' },
+      { width: '75%', gradient: 'linear-gradient(90deg, #00d2ff, transparent)' },
     ],
     baseAngle: 8,
     baseZ: 120,
     slotStyle: {
-      left: '52%',
+      left: '54%',
       top: '65px',
       animationDelay: '-4s',
       zIndex: 3,
@@ -168,16 +175,26 @@ function HeroResourceCard({ card }: { card: CardItem }) {
           <div className="fc-sheen-sweep" />
         </div>
 
-        {/* Card Header: Badge on left, Icon on right (Matches Photo 1) */}
+        {/* Card Header: Badge on left, Icon on right (Matches Photo Exactly) */}
         <div className="fc-top">
           <span className={`fc-badge fc-badge-${card.theme}`}>
             {card.badgeText}
           </span>
-          {card.icon ? (
-            <div className={`fc-icon fc-icon-${card.theme}`}>{card.icon}</div>
-          ) : (
-            <div style={{ width: 34, height: 34 }} />
+          {card.iconType === 'layers' && (
+            <div className="fc-icon-box fc-icon-layers">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+                <rect x="2" y="2" width="13" height="13" rx="3.5" fill="#00d2ff" fillOpacity="0.8" />
+                <rect x="8" y="4" width="13" height="13" rx="3.5" fill="#10b981" fillOpacity="0.85" />
+                <rect x="5" y="8" width="14" height="14" rx="3.5" fill="#ec4899" fillOpacity="0.95" />
+              </svg>
+            </div>
           )}
+          {card.iconType === 'brain' && (
+            <div className="fc-icon-box fc-icon-brain">
+              <span className="fc-brain-emoji">🧠</span>
+            </div>
+          )}
+          {card.iconType === 'none' && <div style={{ width: 36, height: 36 }} />}
         </div>
 
         {/* Card Miniature Animated Preview Bars */}
@@ -196,7 +213,15 @@ function HeroResourceCard({ card }: { card: CardItem }) {
 
         {/* Card Bottom Details & Golden Callout */}
         <div className="fc-bottom">
-          <span className="fc-title">{card.title}</span>
+          <span className="fc-title">
+            {card.title1}
+            {card.title2 && (
+              <>
+                <br />
+                {card.title2}
+              </>
+            )}
+          </span>
           <small>{card.subtitle}</small>
           <div className="fc-action-hint">
             <span>{card.actionText}</span>
