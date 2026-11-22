@@ -2,6 +2,7 @@ import Hero from '@/components/Hero'
 import Library from '@/components/Library'
 import ContactForm from '@/components/ContactForm'
 import WelcomeIntro from '@/components/WelcomeIntro'
+import AboutSection from '@/components/AboutSection'
 import { ctx, favIdsFor, getSite, DEFAULT_SITE } from '@/lib/data'
 
 export const dynamic = 'force-dynamic'
@@ -76,74 +77,7 @@ export default async function Home() {
       </section>
 
       {/* About Section */}
-      <section id="about" className="wrap sec about">
-        <div
-          className="panel"
-          style={{
-            position: 'relative',
-            overflow: 'hidden',
-            padding: '40px 36px',
-            background: 'linear-gradient(135deg, rgba(22, 12, 42, 0.75), rgba(10, 5, 20, 0.85))',
-            borderColor: 'rgba(168, 85, 247, 0.3)',
-          }}
-        >
-          <div
-            style={{
-              position: 'absolute',
-              top: 0,
-              right: 0,
-              width: 300,
-              height: 300,
-              background: 'radial-gradient(circle, rgba(168, 85, 247, 0.2) 0%, transparent 70%)',
-              filter: 'blur(50px)',
-              pointerEvents: 'none',
-            }}
-          />
-
-          <div
-            style={{
-              display: 'inline-flex',
-              alignItems: 'center',
-              gap: 6,
-              fontSize: '0.78rem',
-              fontWeight: 700,
-              letterSpacing: '0.08em',
-              textTransform: 'uppercase',
-              color: 'var(--ac2)',
-              marginBottom: 8,
-            }}
-          >
-            <span>✦</span> THE CREATOR
-          </div>
-
-          <h2 style={{ marginBottom: 20 }}>{site.about_title || 'About TheMohitFact'}</h2>
-
-          <div>
-            {String(site.about_body || '')
-              .split(/\n\s*\n/)
-              .map((p, i) => (
-                <p key={i}>{p}</p>
-              ))}
-          </div>
-
-          {links.length > 0 && (
-            <div className="row" style={{ marginTop: 24, gap: 12 }}>
-              {links.map((link) => (
-                <a
-                  key={link.name}
-                  className="btn"
-                  href={link.url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  style={{ gap: 8 }}
-                >
-                  <span>{link.icon}</span> {link.name}
-                </a>
-              ))}
-            </div>
-          )}
-        </div>
-      </section>
+      <AboutSection site={site} />
 
       {/* Contact Section */}
       <section id="contact" className="wrap sec">
