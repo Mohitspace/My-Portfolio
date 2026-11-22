@@ -35,8 +35,9 @@ export const DEFAULT_SITE = {
   about_title: 'About TheMohitFact',
   about_body:
     'TheMohitFact is a YouTube channel about self-improvement and personal development. This hub holds the extra material: PDFs, books, notes and guides that go deeper than a video can.\n\nCreate a free account to download resources and save your favorites. If a topic helped you, or you want one covered, send a message below.',
-  youtube: '',
-  instagram: '',
+  youtube: 'https://youtube.com/@themohit_18?si=MjrCZy_ERYC6QGl1',
+  instagram:
+    'https://www.instagram.com/themkfacts?gwpx=MWNmeXE5MjRqamVpZw%3D%3D&utm_source=qr',
   twitter: '',
   email: '',
 }

@@ -18,8 +18,8 @@ export const ABOUT_CONFIG = {
     'My mission is simple: to help you build unbreakable discipline, think with clarity, and elevate your everyday life — one practical step at a time. No shortcuts or empty motivation, just real perspective to unlock your genuine potential.',
 
   // 2. Profile Photo (Replace with any image URL or file path in /public/image/)
-  photoUrl: '/image/mohit-portrait.png',
-  fallbackPhotoUrl: '/image/Confident%20Young%20Man%20in%20White%20Shirt.png',
+  photoUrl: '/image/mohit-creator.jpg',
+  fallbackPhotoUrl: '/image/mohit-portrait.png',
   creatorRole: 'Creator & Mindset Mentor',
   creatorPill: 'Self-Improvement · YouTube',
 
@@ -53,8 +53,9 @@ export const ABOUT_CONFIG = {
 
   // 4. Social Links & Main CTA
   // Replace these URLs with your actual profile links
-  youtubeUrl: 'https://youtube.com/@themohitfact',
-  instagramUrl: 'https://instagram.com/themohitfact',
+  youtubeUrl: 'https://youtube.com/@themohit_18?si=MjrCZy_ERYC6QGl1',
+  instagramUrl:
+    'https://www.instagram.com/themkfacts?gwpx=MWNmeXE5MjRqamVpZw%3D%3D&utm_source=qr',
   twitterUrl: 'https://twitter.com/themohitfact',
 }
 
@@ -63,10 +64,10 @@ export default function AboutSection({
 }: {
   site?: { youtube?: string; instagram?: string; twitter?: string }
 }) {
-  // Use site database URL if configured, otherwise fallback to ABOUT_CONFIG
-  const youtubeLink = site?.youtube || ABOUT_CONFIG.youtubeUrl
-  const instagramLink = site?.instagram || ABOUT_CONFIG.instagramUrl
-  const twitterLink = site?.twitter || ABOUT_CONFIG.twitterUrl
+  // Use explicit user-provided URLs with fallback to database
+  const youtubeLink = ABOUT_CONFIG.youtubeUrl || site?.youtube
+  const instagramLink = ABOUT_CONFIG.instagramUrl || site?.instagram
+  const twitterLink = ABOUT_CONFIG.twitterUrl || site?.twitter
 
   // Profile Image state with fallback
   const [imgSrc, setImgSrc] = useState(ABOUT_CONFIG.photoUrl)
