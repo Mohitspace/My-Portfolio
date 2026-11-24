@@ -33,17 +33,17 @@ export default function AnimatedBackground() {
     let width = (canvas.width = window.innerWidth)
     let height = (canvas.height = window.innerHeight)
 
-    // Palette: Ultra-Luxurious Diamond Stardust, Platinum Silver & Celestial Sparkles
+    // Palette: Diamond White, Soft Rose Pink, Celestial Lavender, Electric Violet
     const starColors = [
       'rgba(255, 255, 255, ',     // Pure Diamond White
-      'rgba(241, 245, 249, ',     // Platinum Silver
-      'rgba(226, 232, 240, ',     // Crisp Celestial Silver
-      'rgba(216, 240, 255, ',     // Soft Icy Blue Starlight
-      'rgba(238, 232, 255, ',     // Subtle Stardust Shimmer
+      'rgba(253, 164, 175, ',     // Rose Pink
+      'rgba(244, 114, 182, ',     // Soft Blossom
+      'rgba(233, 213, 255, ',     // Lavender Starlight
+      'rgba(192, 132, 252, ',     // Violet Shimmer
+      'rgba(216, 240, 255, ',     // Soft Icy Blue
     ]
 
-    // Scale particle count to screen size (refined, elegant density)
-    const particleCount = Math.min(Math.floor((width * height) / 24000), 45)
+    const particleCount = Math.min(Math.floor((width * height) / 22000), 50)
     const embers: Ember[] = []
 
     for (let i = 0; i < particleCount; i++) {
@@ -52,7 +52,7 @@ export default function AnimatedBackground() {
         y: Math.random() * height,
         size: Math.random() * 1.5 + 0.5,
         vx: (Math.random() - 0.5) * 0.15,
-        vy: -Math.random() * 0.3 - 0.08, // Slow, elegant upward cosmic drift
+        vy: -Math.random() * 0.28 - 0.08, // Slow, elegant upward cosmic drift
         swaySpeed: Math.random() * 0.015 + 0.006,
         swayDist: Math.random() * 1.8 + 0.6,
         swayOffset: Math.random() * Math.PI * 2,
@@ -135,7 +135,7 @@ export default function AnimatedBackground() {
         ctx.beginPath()
         ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2)
         ctx.fillStyle = `${p.color}${p.alpha})`
-        ctx.shadowBlur = p.size > 1.4 ? 10 : 5
+        ctx.shadowBlur = p.size > 1.3 ? 9 : 4
         ctx.shadowColor = `${p.color}0.75)`
         ctx.fill()
       }
@@ -159,24 +159,24 @@ export default function AnimatedBackground() {
 
   return (
     <div className="ambient-scene" aria-hidden="true">
-      {/* 1. Deep Pitch Black Void Foundation */}
+      {/* 1. Deep Obsidian Void Base */}
       <div className="ambient-base" />
 
-      {/* 2. Liquid Obsidian Silk Waves (Undulating Monochromatic Dark Sheen) */}
+      {/* 2. Luxury Dark Purple & Rose Aurora Mesh Foundation Layer */}
       <div className="ambient-liquid-wrap">
         <div className="ambient-liquid-img" />
         <div className="ambient-liquid-overlay" />
       </div>
 
-      {/* 3. Atmospheric Dark Void Pulses (Extremely subtle, breathing depth without color clash) */}
-      <div className="ambient-void-pulse pulse-1" />
-      <div className="ambient-void-pulse pulse-2" />
-      <div className="ambient-void-pulse pulse-3" />
+      {/* 3. Fluid Animated Ambient Aurora Glow Orbs (Rose top-left & Violet bottom-right) */}
+      <div className="ambient-aurora-orb ambient-orb-topleft" />
+      <div className="ambient-aurora-orb ambient-orb-bottomright" />
+      <div className="ambient-aurora-orb ambient-orb-center" />
 
-      {/* 4. Interactive Specular Cursor Spotlight (Soft Pure Silver-White Studio Light) */}
+      {/* 4. Interactive Specular Cursor Spotlight (Soft Rose-Violet Halo) */}
       <div ref={spotlightRef} className="ambient-cursor-spotlight" />
 
-      {/* 5. Precision Dark Micro-Grid with Moving Scanner Beam */}
+      {/* 5. Precision Dark Micro-Grid with Moving Horizon Scanner Beam */}
       <div className="ambient-grid">
         <div className="ambient-scanner-beam" />
       </div>
