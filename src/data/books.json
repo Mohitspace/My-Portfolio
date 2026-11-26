@@ -1,0 +1,326 @@
+[
+  {
+    "id": "atomic-habits",
+    "title": "Atomic Habits",
+    "author": "James Clear",
+    "category": "Productivity & Habits",
+    "year": 2018,
+    "pages": 256,
+    "description": "An easy and proven way to build good habits and break bad ones. Learn the 4 laws of behavior change showing how tiny 1% daily improvements compound into life-changing results.",
+    "format": "PDF",
+    "file_path": "/books/Atomic%20habits%20(%20PDFDrive%20).pdf",
+    "cover_url": "/books/covers/atomic-habits.png",
+    "size_bytes": 5111325,
+    "access": "free",
+    "tags": [
+      "book",
+      "pdf",
+      "guide",
+      "ebook",
+      "productivity & habits"
+    ],
+    "spine": {
+      "color": "#E65C00",
+      "accent": "#FFD700",
+      "label": "PDF"
+    },
+    "created_at": "2026-11-26T10:17:33.762Z"
+  },
+  {
+    "id": "mindset-psychology-of-success",
+    "title": "Mindset: The New Psychology of Success",
+    "author": "Carol S. Dweck, Ph.D.",
+    "category": "Psychology & Growth",
+    "year": 2006,
+    "pages": 301,
+    "description": "The world-renowned Stanford psychologist reveals how our belief about our capabilities—the fixed vs. growth mindset—determines personal fulfillment, resilience, and achievement.",
+    "format": "PDF",
+    "file_path": "/books/20231124092918-Mindset_The_New_Psychology_of_Success.pdf",
+    "cover_url": "/books/covers/mindset-psychology-of-success.png",
+    "size_bytes": 3217871,
+    "access": "free",
+    "tags": [
+      "book",
+      "pdf",
+      "guide",
+      "ebook",
+      "psychology & growth"
+    ],
+    "spine": {
+      "color": "#1F3FB0",
+      "accent": "#60A5FA",
+      "label": "PDF"
+    },
+    "created_at": "2026-11-25T10:17:34.201Z"
+  },
+  {
+    "id": "7-habits-highly-effective-people",
+    "title": "The 7 Habits of Highly Effective People",
+    "author": "Stephen R. Covey",
+    "category": "Leadership & Success",
+    "year": 1989,
+    "pages": 219,
+    "description": "A holistic, principle-centered architecture for solving personal and professional dilemmas, cultivating proactive character, synergy, and timeless effectiveness.",
+    "format": "PDF",
+    "file_path": "/books/Covey%20-%20The%207%20habits%20of%20highly%20effective%20people.pdf",
+    "cover_url": "/books/covers/7-habits-highly-effective-people.png",
+    "size_bytes": 1660911,
+    "access": "free",
+    "tags": [
+      "book",
+      "pdf",
+      "guide",
+      "ebook",
+      "leadership & success"
+    ],
+    "spine": {
+      "color": "#0F766E",
+      "accent": "#2DD4BF",
+      "label": "PDF"
+    },
+    "created_at": "2026-11-24T10:17:35.212Z"
+  },
+  {
+    "id": "the-80-20-rule",
+    "title": "The 80/20 Rule: Pareto Principle",
+    "author": "Celestine Chua",
+    "category": "Focus & Efficiency",
+    "year": 2013,
+    "pages": 26,
+    "description": "Pinpoint the vital 20% of your inputs that create 80% of your outcomes. Strip away unnecessary friction and amplify your daily productivity and peace of mind.",
+    "format": "PDF",
+    "file_path": "/books/the-80-20-rule-personal-excellence-ebook.pdf",
+    "cover_url": "/books/covers/the-80-20-rule.png",
+    "size_bytes": 350775,
+    "access": "free",
+    "tags": [
+      "book",
+      "pdf",
+      "guide",
+      "ebook",
+      "focus & efficiency"
+    ],
+    "spine": {
+      "color": "#7C2D12",
+      "accent": "#FB923C",
+      "label": "PDF"
+    },
+    "created_at": "2026-11-23T10:17:35.465Z"
+  },
+  {
+    "id": "101-questions-to-ask-yourself",
+    "title": "101 Questions to Ask Yourself",
+    "author": "Celestine Chua",
+    "category": "Personal Development",
+    "year": 2012,
+    "pages": 16,
+    "description": "An introspective self-coaching compilation of 101 profound inquiries crafted to illuminate blind spots, clarify values, and steer intentional life direction.",
+    "format": "PDF",
+    "file_path": "/books/101-questions-to-ask-yourself-personal-excellence-ebook.pdf",
+    "cover_url": "/books/covers/101-questions-to-ask-yourself.png",
+    "size_bytes": 970000,
+    "access": "free",
+    "tags": [
+      "book",
+      "pdf",
+      "guide",
+      "ebook",
+      "personal development"
+    ],
+    "spine": {
+      "color": "#4338CA",
+      "accent": "#A5B4FC",
+      "label": "PDF"
+    },
+    "created_at": "2026-11-22T10:17:36.116Z"
+  },
+  {
+    "id": "101-ways-to-be-a-better-person",
+    "title": "101 Ways to Be a Better Person",
+    "author": "Celestine Chua",
+    "category": "Self Improvement",
+    "year": 2011,
+    "pages": 37,
+    "description": "Practical, heartwarming, and deeply ethical actions to enrich your character, radiate kindness, strengthen social integrity, and live honorably.",
+    "format": "PDF",
+    "file_path": "/books/101-ways-to-be-a-better-person-personal-excellence-ebook.pdf",
+    "cover_url": "/books/covers/101-ways-to-be-a-better-person.png",
+    "size_bytes": 1801705,
+    "access": "free",
+    "tags": [
+      "book",
+      "pdf",
+      "guide",
+      "ebook",
+      "self improvement"
+    ],
+    "spine": {
+      "color": "#047857",
+      "accent": "#6EE7B7",
+      "label": "PDF"
+    },
+    "created_at": "2026-11-21T10:17:36.481Z"
+  },
+  {
+    "id": "101-ways-to-live-your-best-life",
+    "title": "101 Ways to Live Your Best Life",
+    "author": "Celestine Chua",
+    "category": "Life Mastery",
+    "year": 2011,
+    "pages": 26,
+    "description": "A vibrant handbook packed with 101 actionable principles to overcome complacency, maximize energy, cultivate joy, and awaken your fullest potential.",
+    "format": "PDF",
+    "file_path": "/books/101-ways-to-live-your-best-life-personal-excellence-ebook.pdf",
+    "cover_url": "/books/covers/101-ways-to-live-your-best-life.png",
+    "size_bytes": 1025059,
+    "access": "free",
+    "tags": [
+      "book",
+      "pdf",
+      "guide",
+      "ebook",
+      "life mastery"
+    ],
+    "spine": {
+      "color": "#BE185D",
+      "accent": "#F472B6",
+      "label": "PDF"
+    },
+    "created_at": "2026-11-20T10:17:36.797Z"
+  },
+  {
+    "id": "how-to-deal-with-disappointment",
+    "title": "How to Deal with Disappointment",
+    "author": "Celestine Chua",
+    "category": "Emotional Resilience",
+    "year": 2014,
+    "pages": 31,
+    "description": "A compassionate step-by-step framework to process disappointment, overcome frustration, recalibrate expectations, and emerge stronger after setbacks.",
+    "format": "PDF",
+    "file_path": "/books/how-to-deal-with-disappointment-personal-excellence-ebook.pdf",
+    "cover_url": "/books/covers/how-to-deal-with-disappointment.png",
+    "size_bytes": 1518469,
+    "access": "free",
+    "tags": [
+      "book",
+      "pdf",
+      "guide",
+      "ebook",
+      "emotional resilience"
+    ],
+    "spine": {
+      "color": "#374151",
+      "accent": "#9CA3AF",
+      "label": "PDF"
+    },
+    "created_at": "2026-11-19T10:17:37.210Z"
+  },
+  {
+    "id": "how-to-find-your-life-purpose",
+    "title": "How to Find Your Life Purpose",
+    "author": "Celestine Chua",
+    "category": "Purpose & Vision",
+    "year": 2013,
+    "pages": 69,
+    "description": "A comprehensive guide to discovering your life mission, aligning career aspirations with genuine passions, and creating enduring personal meaning.",
+    "format": "PDF",
+    "file_path": "/books/how-to-find-your-life-purpose-personal-excellence-ebook.pdf",
+    "cover_url": "/books/covers/how-to-find-your-life-purpose.png",
+    "size_bytes": 1260532,
+    "access": "free",
+    "tags": [
+      "book",
+      "pdf",
+      "guide",
+      "ebook",
+      "purpose & vision"
+    ],
+    "spine": {
+      "color": "#1E3A8A",
+      "accent": "#93C5FD",
+      "label": "PDF"
+    },
+    "created_at": "2026-11-18T10:17:37.656Z"
+  },
+  {
+    "id": "how-to-make-true-friends",
+    "title": "How to Make True Friends",
+    "author": "Celestine Chua",
+    "category": "Relationships",
+    "year": 2013,
+    "pages": 67,
+    "description": "A thoughtful guide on nurturing authentic friendships, deepening emotional resonance, breaking through social loneliness, and keeping loyal bonds.",
+    "format": "PDF",
+    "file_path": "/books/how-to-make-true-friends-personal-excellence-ebook.pdf",
+    "cover_url": "/books/covers/how-to-make-true-friends.png",
+    "size_bytes": 1351244,
+    "access": "free",
+    "tags": [
+      "book",
+      "pdf",
+      "guide",
+      "ebook",
+      "relationships"
+    ],
+    "spine": {
+      "color": "#9D174D",
+      "accent": "#FBCFE8",
+      "label": "PDF"
+    },
+    "created_at": "2026-11-17T10:17:38.042Z"
+  },
+  {
+    "id": "how-to-move-on-from-a-relationship",
+    "title": "How to Move On from a Relationship",
+    "author": "Celestine Chua",
+    "category": "Healing & Closure",
+    "year": 2014,
+    "pages": 64,
+    "description": "Gentle, empowering wisdom to heal from heartbreak, release the emotional weight of past attachments, and courageously welcome a joyful new chapter.",
+    "format": "PDF",
+    "file_path": "/books/how-to-move-on-from-a-relationship-personal-excellence-ebook.pdf",
+    "cover_url": "/books/covers/how-to-move-on-from-a-relationship.png",
+    "size_bytes": 1200768,
+    "access": "free",
+    "tags": [
+      "book",
+      "pdf",
+      "guide",
+      "ebook",
+      "healing & closure"
+    ],
+    "spine": {
+      "color": "#831843",
+      "accent": "#FDA4AF",
+      "label": "PDF"
+    },
+    "created_at": "2026-11-16T10:17:38.464Z"
+  },
+  {
+    "id": "how-to-overcome-perfectionism",
+    "title": "How to Overcome Perfectionism",
+    "author": "Celestine Chua",
+    "category": "Mindset & Growth",
+    "year": 2012,
+    "pages": 47,
+    "description": "Dismantle the paralyzing trap of perfectionism. Learn self-compassion, overcome procrastination rooted in fear, and embrace fulfilling excellence.",
+    "format": "PDF",
+    "file_path": "/books/how-to-overcome-perfectionism-personal-excellence-ebook.pdf",
+    "cover_url": "/books/covers/how-to-overcome-perfectionism.png",
+    "size_bytes": 1376297,
+    "access": "free",
+    "tags": [
+      "book",
+      "pdf",
+      "guide",
+      "ebook",
+      "mindset & growth"
+    ],
+    "spine": {
+      "color": "#4C1D95",
+      "accent": "#C4B5FD",
+      "label": "PDF"
+    },
+    "created_at": "2026-11-15T10:17:39.078Z"
+  }
+]
